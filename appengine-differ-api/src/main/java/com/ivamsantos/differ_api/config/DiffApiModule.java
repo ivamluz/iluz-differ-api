@@ -7,14 +7,16 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+import com.google.inject.Singleton;
 import com.googlecode.objectify.ObjectifyFilter;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 import com.ivamsantos.differ_api.api.GenericExceptionMapper;
+import com.ivamsantos.differ_api.api.model.ApiV1Resource;
 import com.ivamsantos.differ_api.diff.dao.DiffDao;
 import com.ivamsantos.differ_api.diff.dao.ObjectifyDiffDao;
 import com.ivamsantos.differ_api.diff.model.Diff;
-import com.ivamsantos.differ_api.diff.resources.DiffResource;
+import com.ivamsantos.differ_api.diff.resources.DiffV1Resource;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
 import com.ivamsantos.differ_api.diff.service.DiffServicesImpl;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
@@ -45,8 +47,9 @@ public class DiffApiModule extends AbstractModule {
      * Web resource binding
      */
     private void bindApiResourceClasses() {
-        bind(DiffResource.class);
-        bind(GenericExceptionMapper.class);
+        bind(ApiV1Resource.class).in(Scopes.SINGLETON);
+        bind(DiffV1Resource.class).in(Scopes.SINGLETON);
+        bind(GenericExceptionMapper.class).in(Scopes.SINGLETON);
     }
 
     /*
@@ -65,11 +68,13 @@ public class DiffApiModule extends AbstractModule {
     }
 
     @Provides
+    @Singleton
     protected DatastoreService datastoreServiceProvider() {
         return DatastoreServiceFactory.getDatastoreService();
     }
 
     @Provides
+    @Singleton
     private MemcacheService memcacheServiceProvider() {
         return MemcacheServiceFactory.getMemcacheService();
     }
