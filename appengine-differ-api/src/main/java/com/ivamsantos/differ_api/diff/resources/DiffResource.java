@@ -1,5 +1,6 @@
 package com.ivamsantos.differ_api.diff.resources;
 
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 import com.ivamsantos.differ_api.diff.model.Diff;
 
 import javax.inject.Singleton;
@@ -20,12 +21,8 @@ import javax.ws.rs.core.Response;
 @Singleton
 public class DiffResource {
     @GET
-    public Response search(@QueryParam("id") final Long id) {
-        try {
-            Diff diff = new Diff.Builder().withId(id).withLeft("left").build();
-            return Response.status(200).entity(diff).build();
-        } catch (Throwable e) {
-            return Response.serverError().build();
-        }
+    public Response search(@QueryParam("id") final Long id) throws InvalidDiffObjectException {
+        Diff diff = new Diff.Builder().withId(id).withLeft("left").build();
+        return Response.status(200).entity(diff).build();
     }
 }
