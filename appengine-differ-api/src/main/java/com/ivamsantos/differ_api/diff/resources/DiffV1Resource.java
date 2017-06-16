@@ -32,4 +32,11 @@ public class DiffV1Resource {
         Diff diff = new Diff.Builder().withId(id).withRight("right").build();
         return Response.status(200).entity(diff).build();
     }
+
+    @GET
+    @Path("/{id : [0-9]+}")
+    public Response getDifferences(@PathParam("id") final Long id) throws InvalidDiffObjectException {
+        Diff diff = new Diff.Builder().withId(id).withLeft("left").withRight("right").withDiff("diff").build();
+        return Response.status(200).entity(diff).build();
+    }
 }
