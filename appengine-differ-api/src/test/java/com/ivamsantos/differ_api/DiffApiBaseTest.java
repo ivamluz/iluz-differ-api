@@ -14,6 +14,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 import com.ivamsantos.differ_api.config.DiffApiModule;
 import com.ivamsantos.differ_api.diff.dao.DiffDao;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 import com.ivamsantos.differ_api.diff.model.Diff;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
 import org.junit.After;
@@ -34,6 +35,11 @@ public abstract class DiffApiBaseTest {
 
     protected Closeable dbSession;
 
+    protected DiffDao diffDao;
+    protected DiffServices diffServices;
+
+    protected DiffFixture diffFixture;
+
     public DiffApiBaseTest() {
         this.injector = Guice.createInjector(new DiffApiModule());
     }
@@ -51,6 +57,11 @@ public abstract class DiffApiBaseTest {
         memcacheService = MemcacheServiceFactory.getMemcacheService();
 
         dbSession = ObjectifyService.begin();
+
+        diffDao = diffDao();
+        diffServices = diffServices();
+
+        diffFixture = new DiffFixture();
     }
 
     @After
@@ -63,11 +74,63 @@ public abstract class DiffApiBaseTest {
         return this.injector.getInstance(type);
     }
 
-    protected DiffDao diffDao() {
+    private DiffDao diffDao() {
         return getInstance(DiffDao.class);
     }
 
-    protected DiffServices diffServices() {
+    private DiffServices diffServices() {
         return getInstance(DiffServices.class);
+    }
+
+    public class DiffFixture {
+        private static final String LEFT = "left";
+        private static final String RIGHT = "right";
+
+        public Diff withIdAndLeft(Long id) throws InvalidDiffObjectException {
+            Diff diff = new Diff.Builder()
+                    .withId(id)
+                    .withLeft(LEFT)
+                    .build();
+
+            diffDao.save(diff);
+
+            return diff;
+        }
+
+        public Diff withIdAndRight(Long id) throws InvalidDiffObjectException {
+            Diff diff = new Diff.Builder()
+                    .withId(id)
+                    .withRight(RIGHT)
+                    .build();
+
+            diffDao.save(diff);
+
+            return diff;
+        }
+
+        public Diff withIdLeftAndRight(Long id) throws InvalidDiffObjectException {
+            Diff diff = new Diff.Builder()
+                    .withId(id)
+                    .withLeft(LEFT)
+                    .withRight(RIGHT)
+                    .build();
+
+            diffDao.save(diff);
+
+            return diff;
+        }
+
+        public Diff full(Long id) throws InvalidDiffObjectException {
+            Diff diff = new Diff.Builder()
+                    .withId(id)
+                    .withLeft(LEFT)
+                    .withRight(RIGHT)
+                    .withDiff("{}")
+                    .build();
+
+            diffDao.save(diff);
+
+            return diff;
+        }
     }
 }

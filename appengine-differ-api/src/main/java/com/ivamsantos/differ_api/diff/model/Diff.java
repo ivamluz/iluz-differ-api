@@ -75,6 +75,22 @@ public class Diff {
             return this;
         }
 
+        public Builder from(Diff diff) {
+            if (diff == null) {
+                id = null;
+                left = null;
+                right = null;
+                diff = null;
+            } else {
+                id = diff.getId();
+                left = diff.getLeft();
+                right = diff.getRight();
+                this.diff = diff.getDiff();
+            }
+
+            return this;
+        }
+
         public Diff build() {
             return new Diff(this);
         }

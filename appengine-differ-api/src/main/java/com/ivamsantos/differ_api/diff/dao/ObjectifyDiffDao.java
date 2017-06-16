@@ -10,7 +10,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
  */
 public class ObjectifyDiffDao implements DiffDao {
     @Override
-    public Long insert(Diff diff) throws InvalidDiffObjectException {
+    public Long save(Diff diff) throws InvalidDiffObjectException {
         if (!diff.hasId()) {
             throw new InvalidDiffObjectException("withId can't be null nor empty.");
         }
@@ -26,5 +26,10 @@ public class ObjectifyDiffDao implements DiffDao {
     @Override
     public void delete(Diff diff) {
         ofy().delete().entity(diff).now();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        ofy().delete().type(Diff.class).id(id).now();
     }
 }

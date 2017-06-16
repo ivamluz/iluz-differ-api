@@ -8,8 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import javax.inject.Inject;
-
 import static com.google.common.truth.Truth.assertThat;
 
 /**
@@ -19,31 +17,27 @@ import static com.google.common.truth.Truth.assertThat;
 public class DiffDaoTest extends DiffApiBaseTest {
     private static final Long ID = 1L;
 
-    @Inject
-    private DiffDao diffDao;
-
     @Before
     @Override
     public void setUp() {
         super.setUp();
-        diffDao = diffDao();
     }
 
     @Test(expected = InvalidDiffObjectException.class)
     public void shouldThrowExceptionIfIdIsMissing() throws InvalidDiffObjectException {
         Diff diff = new Diff.Builder().withLeft("left").build();
-        diffDao.insert(diff);
+        diffDao.save(diff);
     }
 
     @Test
     public void shouldInsertDiffWithOnlyLeftFilled() throws InvalidDiffObjectException {
-        Diff diff = createWithIdAndLeft();
+        Diff diff = diffFixture.withIdAndLeft(ID);
         assertThat(diff.getId()).isNotNull();
     }
 
     @Test
     public void shouldFindDiffById() throws InvalidDiffObjectException {
-        Diff diff = createWithIdAndLeft();
+        Diff diff = diffFixture.withIdAndLeft(ID);
 
         Diff savedDiff = diffDao.findById(diff.getId());
         assertThat(savedDiff).isNotNull();
@@ -52,40 +46,34 @@ public class DiffDaoTest extends DiffApiBaseTest {
 
     @Test
     public void shouldDeleteDiff() throws InvalidDiffObjectException {
-        Diff diff = createWithIdAndLeft();
+        Diff diff = diffFixture.withIdAndLeft(ID);
 
         diffDao.delete(diff);
         assertThat(diffDao.findById(diff.getId())).isNull();
     }
 
     @Test
-    public void shouldDeleteDiffById() {
+    public void shouldDeleteDiffById() throws InvalidDiffObjectException {
+        Diff diff = diffFixture.withIdAndLeft(ID);
 
+        diffDao.deleteById(diff.getId());
+        assertThat(diffDao.findById(diff.getId())).isNull();
     }
 
     @Test
-    public void shouldUpdateDiff() {
+    public void shouldUpdateDiff() throws InvalidDiffObjectException {
+        Diff diff = diffFixture.full(ID);
 
-    }
+        String newLeft = "changedLeft";
 
-    @Test(expected = InvalidDiffObjectException.class)
-    public void shouldThrowExceptionIfResultIsSetButLeftInputIsMissing() throws InvalidDiffObjectException {
-        throw new InvalidDiffObjectException("foo");
-    }
+        Diff changedDiff = new Diff.Builder()
+                .from(diff)
+                .withLeft(newLeft)
+                .build();
 
-    @Test(expected = InvalidDiffObjectException.class)
-    public void shouldThrowExceptionIfResultIsSetButRightInputIsMissing() throws InvalidDiffObjectException {
-        throw new InvalidDiffObjectException("foo");
-    }
+        Long id = diffDao.save(changedDiff);
 
-    public void shouldInsertWithResultIfBothInputsAreFilled() {
-
-    }
-
-    private Diff createWithIdAndLeft() throws InvalidDiffObjectException {
-        Diff diff = new Diff.Builder().withId(ID).withLeft("left").build();
-        diffDao.insert(diff);
-
-        return diff;
+        Diff savedDiff = diffDao.findById(id);
+        assertThat(savedDiff.getLeft()).isEqualTo(newLeft);
     }
 }
