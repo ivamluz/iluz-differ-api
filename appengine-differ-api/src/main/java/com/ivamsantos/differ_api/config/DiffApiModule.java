@@ -1,11 +1,11 @@
-package com.ivamsantos.config;
+package com.ivamsantos.differ_api.config;
 
-import com.ivamsantos.diff.dao.DiffDao;
-import com.ivamsantos.diff.dao.ObjectifyDiffDao;
-import com.ivamsantos.diff.model.Diff;
-import com.ivamsantos.diff.resources.DiffResource;
-import com.ivamsantos.diff.service.DiffServices;
-import com.ivamsantos.diff.service.DiffServicesImpl;
+import com.ivamsantos.differ_api.diff.dao.DiffDao;
+import com.ivamsantos.differ_api.diff.dao.ObjectifyDiffDao;
+import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.diff.resources.DiffResource;
+import com.ivamsantos.differ_api.diff.service.DiffServices;
+import com.ivamsantos.differ_api.diff.service.DiffServicesImpl;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.memcache.MemcacheService;
@@ -19,7 +19,7 @@ import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 
-public class DifferApiModule extends AbstractModule {
+public class DiffApiModule extends AbstractModule {
 
     static {
         JodaTimeTranslators.add(ObjectifyService.factory());

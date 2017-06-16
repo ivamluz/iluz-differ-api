@@ -1,4 +1,4 @@
-package com.ivamsantos.config;
+package com.ivamsantos.differ_api.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

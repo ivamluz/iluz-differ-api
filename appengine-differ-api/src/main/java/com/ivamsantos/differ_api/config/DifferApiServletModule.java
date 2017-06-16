@@ -1,4 +1,4 @@
-package com.ivamsantos.config;
+package com.ivamsantos.differ_api.config;
 
 import com.google.inject.servlet.ServletModule;
 import com.googlecode.objectify.ObjectifyFilter;
@@ -11,7 +11,7 @@ public class DifferApiServletModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
-        install(new DifferApiModule());
+        install(new DiffApiModule());
 
         // Objectify requires a filter to clean up any thread-local transaction contexts and pending asynchronous
         // operations that remain at the end of a request: https://code.google.com/p/objectify-appengine/wiki/Setup

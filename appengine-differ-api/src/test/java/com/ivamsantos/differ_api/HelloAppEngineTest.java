@@ -1,6 +1,5 @@
 package com.ivamsantos.differ_api;
 
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -22,10 +22,8 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(JUnit4.class)
-public class HelloAppEngineTest {
+public class HelloAppEngineTest extends DiffApiBaseTest {
     private static final String FAKE_URL = "fake.fk/hello";
-    // Set up a helper so that the ApiProxy returns a valid environment for local testing.
-    private final LocalServiceTestHelper helper = new LocalServiceTestHelper();
 
     @Mock
     private HttpServletRequest mockRequest;
@@ -35,7 +33,10 @@ public class HelloAppEngineTest {
     private HelloAppEngine servletUnderTest;
 
     @Before
-    public void setUp() throws Exception {
+    @Override
+    public void setUp() {
+        super.setUp();
+
         MockitoAnnotations.initMocks(this);
         helper.setUp();
 
@@ -44,7 +45,12 @@ public class HelloAppEngineTest {
 
         // Set up a fake HTTP response.
         responseWriter = new StringWriter();
-        when(mockResponse.getWriter()).thenReturn(new PrintWriter(responseWriter));
+
+        try {
+            when(mockResponse.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
         servletUnderTest = new HelloAppEngine();
     }

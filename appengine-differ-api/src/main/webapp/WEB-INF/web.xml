@@ -6,7 +6,7 @@
 
     <!-- Guice Servlet Context Listener -->
     <listener>
-        <listener-class>com.ivamsantos.config.DifferApiGuiceServletContextListener</listener-class>
+        <listener-class>com.ivamsantos.differ_api.config.DifferApiGuiceServletContextListener</listener-class>
     </listener>
 
     <!-- Guice Filter -->
