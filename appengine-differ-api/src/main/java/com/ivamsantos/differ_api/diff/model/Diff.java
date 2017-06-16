@@ -3,6 +3,7 @@ package com.ivamsantos.differ_api.diff.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 
 /**
  * Created by iluz on 6/15/17.
@@ -91,8 +92,35 @@ public class Diff {
             return this;
         }
 
-        public Diff build() {
+        public Diff build() throws InvalidDiffObjectException {
+            validate();
+
             return new Diff(this);
+        }
+
+        private void validate() throws InvalidDiffObjectException {
+            boolean isIdNull = (id == null);
+
+            if (isIdNull) {
+                throw new InvalidDiffObjectException("id can't be null.");
+            }
+
+            if (id < 0) {
+                throw new InvalidDiffObjectException("id should be greather than or equal to 0.");
+            }
+
+            boolean isDiffNull = (diff == null);
+            boolean isLeftOrRightNull = (left == null) || (right == null);
+            boolean isLeftAndRightNull = (left == null) && (right == null);
+
+            if (!isDiffNull && isLeftOrRightNull) {
+                throw new InvalidDiffObjectException("Diff may not be filled with either left or right as null.");
+            }
+
+            boolean isOnlyIdFilled = (!isIdNull && isDiffNull && isLeftAndRightNull);
+            if (isOnlyIdFilled) {
+                throw new InvalidDiffObjectException("Either left or right should be provided with id.");
+            }
         }
     }
 }

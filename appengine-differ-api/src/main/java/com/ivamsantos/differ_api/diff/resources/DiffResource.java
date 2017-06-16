@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * REST API for performing diff operations.
@@ -19,7 +20,12 @@ import javax.ws.rs.core.MediaType;
 @Singleton
 public class DiffResource {
     @GET
-    public Diff search(@QueryParam("withId") final Long id) {
-        return new Diff.Builder().withId(id).build();
+    public Response search(@QueryParam("id") final Long id) {
+        try {
+            Diff diff = new Diff.Builder().withId(id).withLeft("left").build();
+            return Response.status(200).entity(diff).build();
+        } catch (Throwable e) {
+            return Response.serverError().build();
+        }
     }
 }
