@@ -1,5 +1,6 @@
 package com.ivamsantos.differ_api.diff.resources;
 
+import com.google.common.io.BaseEncoding;
 import com.google.inject.Inject;
 import com.ivamsantos.differ_api.diff.model.Differences;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
@@ -26,16 +27,32 @@ public class DiffV1Resource {
 
     @POST
     @Path("/{id : [0-9]+}/left")
-    public Response left(@PathParam("id") final Long id, String left) {
-        diffServices.saveLeft(id, left);
-        return Response.status(200).build();
+    public Response left(@PathParam("id") final Long id, String encodedLeft) {
+        String decodedLeft;
+        try {
+            decodedLeft = new String(BaseEncoding.base64().decode(encodedLeft));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("The left input should be a valid base64 encoded value.", e);
+        }
+
+        diffServices.saveLeft(id, decodedLeft);
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/{id : [0-9]+}/right")
-    public Response right(@PathParam("id") final Long id, String right) {
-        diffServices.saveRight(id, right);
-        return Response.status(200).build();
+    public Response right(@PathParam("id") final Long id, String encodedRight) {
+        String decodeRight;
+        try {
+            decodeRight = new String(BaseEncoding.base64().decode(encodedRight));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("The right input should be a valid base64 encoded value.", e);
+        }
+
+        diffServices.saveRight(id, decodeRight);
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @GET
@@ -43,32 +60,6 @@ public class DiffV1Resource {
     public Response getDifferences(@PathParam("id") final Long id) {
         Differences differences = diffServices.diff(id);
 
-//        final String original = "Line 1\n" +
-//                "Line 2\n" +
-//                "Line 3\n" +
-//                "Line 4\n" +
-//                "Line 5\n" +
-//                "Line 6\n" +
-//                "Line 7\n" +
-//                "Line 8\n" +
-//                "Line 9\n" +
-//                "Line 10";
-//
-//        final String revised = "Line 2\n" +
-//                "Line 3 with changes\n" +
-//                "Line 4\n" +
-//                "Line 5 with changes and\n" +
-//                "a new line\n" +
-//                "Line 6\n" +
-//                "new line 6.1\n" +
-//                "Line 7\n" +
-//                "Line 8\n" +
-//                "Line 9\n" +
-//                "Line 10 with changes";
-//
-//        Differ differ = new DiffUtilStringDiffer();
-//        Differences differences = differ.diff(original, revised);
-
-        return Response.status(200).entity(differences).build();
+        return Response.status(Response.Status.OK).entity(differences).build();
     }
 }

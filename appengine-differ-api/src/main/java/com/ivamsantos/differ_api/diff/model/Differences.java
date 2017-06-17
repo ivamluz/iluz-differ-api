@@ -97,7 +97,7 @@ public class Differences {
         private List<String> lines;
 
         public Chunk() {
-            
+
         }
 
         private Chunk(Builder builder) {
