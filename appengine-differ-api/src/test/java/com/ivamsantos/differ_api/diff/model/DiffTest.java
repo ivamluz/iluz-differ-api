@@ -16,14 +16,14 @@ public class DiffTest {
     private static final String DIFF = "{}";
 
     @Test(expected = InvalidDiffObjectException.class)
-    public void shouldThrowExceptionIfHasOnlyId() throws InvalidDiffObjectException {
+    public void shouldThrowExceptionIfHasOnlyId() {
         new Diff.Builder()
                 .withId(ID)
                 .build();
     }
 
     @Test(expected = InvalidDiffObjectException.class)
-    public void shouldThrowExceptionIfHasResultButEitherLeftOrRightIsNotFilled() throws InvalidDiffObjectException {
+    public void shouldThrowExceptionIfHasResultButEitherLeftOrRightIsNotFilled() {
         new Diff.Builder()
                 .withId(ID)
                 .withDiff(DIFF)
@@ -31,7 +31,7 @@ public class DiffTest {
     }
 
     @Test(expected = InvalidDiffObjectException.class)
-    public void shouldThrowExceptionIfIdIsMissing() throws InvalidDiffObjectException {
+    public void shouldThrowExceptionIfIdIsMissing() {
         new Diff.Builder()
                 .withLeft(LEFT)
                 .withRight(RIGHT)
@@ -40,7 +40,7 @@ public class DiffTest {
     }
 
     @Test
-    public void shouldBuildIfHasIdAndLeftOnly() throws InvalidDiffObjectException {
+    public void shouldBuildIfHasIdAndLeftOnly() {
         new Diff.Builder()
                 .withId(ID)
                 .withLeft(LEFT)
@@ -48,7 +48,7 @@ public class DiffTest {
     }
 
     @Test
-    public void shouldBuildIfHasIdAndRightOnly() throws InvalidDiffObjectException {
+    public void shouldBuildIfHasIdAndRightOnly() {
         new Diff.Builder()
                 .withId(ID)
                 .withRight(LEFT)
@@ -56,7 +56,7 @@ public class DiffTest {
     }
 
     @Test
-    public void shouldBuildIfHasIdAndBothLeftAndRight() throws InvalidDiffObjectException {
+    public void shouldBuildIfHasIdAndBothLeftAndRight() {
         new Diff.Builder()
                 .withId(ID)
                 .withLeft(LEFT)
@@ -65,7 +65,7 @@ public class DiffTest {
     }
 
     @Test
-    public void shouldBuildIfHasBothSidesAndResult() throws InvalidDiffObjectException {
+    public void shouldBuildIfHasBothSidesAndResult() {
         new Diff.Builder()
                 .withId(ID)
                 .withLeft(LEFT)

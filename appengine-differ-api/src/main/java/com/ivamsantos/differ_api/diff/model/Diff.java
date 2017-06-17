@@ -20,6 +20,10 @@ public class Diff {
 
     private String diff;
 
+    public Diff() {
+
+    }
+
     private Diff(Builder builder) {
         id = builder.id;
         left = builder.left;
@@ -92,13 +96,13 @@ public class Diff {
             return this;
         }
 
-        public Diff build() throws InvalidDiffObjectException {
+        public Diff build() {
             validate();
 
             return new Diff(this);
         }
 
-        private void validate() throws InvalidDiffObjectException {
+        private void validate() {
             boolean isIdNull = (id == null);
 
             if (isIdNull) {
