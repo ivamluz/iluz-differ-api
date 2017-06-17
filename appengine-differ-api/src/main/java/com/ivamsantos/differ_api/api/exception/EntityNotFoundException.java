@@ -1,6 +1,6 @@
 package com.ivamsantos.differ_api.api.exception;
 
-public class EntityNotFoundException extends Exception {
+public class EntityNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 649400268294693557L;
 
     private String id;

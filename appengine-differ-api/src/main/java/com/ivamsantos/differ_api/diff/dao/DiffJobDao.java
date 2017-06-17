@@ -1,25 +1,25 @@
 package com.ivamsantos.differ_api.diff.dao;
 
-import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.diff.model.DiffJob;
 
 /**
  * Created by iluz on 6/15/17.
  */
-public interface DiffDao {
-    Long save(Diff diff);
+public interface DiffJobDao {
+    Long save(DiffJob diffJob);
 
-    Diff findById(Long id);
+    DiffJob findById(Long id);
 
-    void delete(Diff diff);
+    void delete(DiffJob diffJob);
 
     void deleteById(Long id);
 
-    Diff transact(DoWork work);
+    DiffJob transact(DoWork work);
 
     void transact(DoVoidWork work);
 
     interface DoWork {
-        Diff run();
+        DiffJob run();
     }
 
     interface DoVoidWork {

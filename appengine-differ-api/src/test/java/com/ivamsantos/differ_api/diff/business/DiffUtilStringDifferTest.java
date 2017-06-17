@@ -2,6 +2,7 @@ package com.ivamsantos.differ_api.diff.business;
 
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.Differences;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -13,7 +14,8 @@ import static com.google.common.truth.Truth.assertThat;
  * Created by iluz on 6/16/17.
  */
 @RunWith(JUnit4.class)
-public class DiffTest {
+public class DiffUtilStringDifferTest {
+    Differ differ;
 
     private final String original = "Line 1\n" +
             "Line 2\n" +
@@ -38,11 +40,16 @@ public class DiffTest {
             "Line 9\n" +
             "Line 10 with changes";
 
+    @Before
+    public void setUp() {
+        differ = new DiffUtilStringDiffer();
+    }
+
     @Test
     public void shouldFindDifferencesWhenInputsAreDifferent() {
-        Differ differ = new DiffUtilStringDiffer(original, revised);
+        Differ differ = new DiffUtilStringDiffer();
 
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff(original, revised);
 
         assertThat(differences.getCount()).isEqualTo(5);
         assertThat(differences.getDifferences().get(0).getType()).isEqualTo(Differences.Delta.Type.DELETED);
@@ -54,59 +61,45 @@ public class DiffTest {
 
     @Test
     public void shouldNotFindDifferencesWhenInputsAreEqual() {
-        Differ differ = new DiffUtilStringDiffer(new String(original), new String(original));
-
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff(new String(original), new String(original));
 
         assertThat(differences.getCount()).isEqualTo(0);
     }
 
     @Test
     public void shouldNotFindDifferencesWhenInputsAreSame() {
-        Differ differ = new DiffUtilStringDiffer(original, original);
-
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff(original, original);
 
         assertThat(differences.getCount()).isEqualTo(0);
     }
 
     @Test(expected = InvalidDiffInputException.class)
     public void shouldThrowExceptionIfOriginalIsNull() {
-        Differ differ = new DiffUtilStringDiffer(null, revised);
-
-        differ.getDifferences();
+        differ.diff(null, revised);
     }
 
     @Test(expected = InvalidDiffInputException.class)
     public void shouldThrowExceptionIfRevisedIsNull() {
-        Differ differ = new DiffUtilStringDiffer(original, null);
-
-        differ.getDifferences();
+        differ.diff(original, null);
     }
 
     @Test
     public void shouldNotFindDifferencesWhenBothInputsAreEmpty() {
-        Differ differ = new DiffUtilStringDiffer("", "");
-
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff("", "");
 
         assertThat(differences.getCount()).isEqualTo(0);
     }
 
     @Test
     public void shouldFindDifferencesWhenOnlyOriginalIsEmpty() {
-        Differ differ = new DiffUtilStringDiffer("", revised);
-
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff("", revised);
 
         assertThat(differences.getCount()).isEqualTo(1);
     }
 
     @Test
     public void shouldFindDifferencesWhenOnlyRevisedIsEmpty() {
-        Differ differ = new DiffUtilStringDiffer(original, "");
-
-        final Differences differences = differ.getDifferences();
+        final Differences differences = differ.diff(original, "");
 
         assertThat(differences.getCount()).isEqualTo(1);
     }

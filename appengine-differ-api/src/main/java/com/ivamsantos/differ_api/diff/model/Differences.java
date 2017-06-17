@@ -34,6 +34,10 @@ public class Differences {
         private Chunk original;
         private Chunk revised;
 
+        public Delta() {
+
+        }
+
         private Delta(Builder builder) {
             type = builder.type;
             original = builder.original;
@@ -91,6 +95,10 @@ public class Differences {
         private int position;
         private int size;
         private List<String> lines;
+
+        public Chunk() {
+            
+        }
 
         private Chunk(Builder builder) {
             position = builder.position;

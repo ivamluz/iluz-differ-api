@@ -3,46 +3,46 @@ package com.ivamsantos.differ_api.diff.dao;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
-import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.diff.model.DiffJob;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 /**
  * Created by iluz on 6/15/17.
  */
-public class ObjectifyDiffDao implements DiffDao {
+public class ObjectifyDiffJobDao implements DiffJobDao {
     @Override
-    public Long save(Diff diff) {
-        if (!diff.hasId()) {
+    public Long save(DiffJob diffJob) {
+        if (!diffJob.hasId()) {
             throw new InvalidDiffObjectException("withId can't be null nor empty.");
         }
 
-        return ofy().save().entity(diff).now().getId();
+        return ofy().save().entity(diffJob).now().getId();
     }
 
     @Override
-    public Diff findById(Long id) {
-        return ofy().load().type(Diff.class).id(id).now();
+    public DiffJob findById(Long id) {
+        return ofy().load().type(DiffJob.class).id(id).now();
     }
 
     @Override
-    public void delete(Diff diff) {
-        ofy().delete().entity(diff).now();
+    public void delete(DiffJob diffJob) {
+        ofy().delete().entity(diffJob).now();
     }
 
     @Override
     public void deleteById(Long id) {
-        ofy().delete().type(Diff.class).id(id).now();
+        ofy().delete().type(DiffJob.class).id(id).now();
     }
 
     @Override
-    public Diff transact(final DoWork work) {
+    public DiffJob transact(final DoWork work) {
         if (work == null) {
             return null;
         }
 
-        return ofy().transact(new Work<Diff>() {
-            public Diff run() {
+        return ofy().transact(new Work<DiffJob>() {
+            public DiffJob run() {
                 return work.run();
             }
         });

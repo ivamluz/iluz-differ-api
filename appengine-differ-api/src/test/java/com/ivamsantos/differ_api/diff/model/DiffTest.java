@@ -13,18 +13,18 @@ public class DiffTest {
     private static final long ID = 1L;
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
-    private static final String DIFF = "{}";
+    private static final Differences DIFF = new Differences();
 
     @Test(expected = InvalidDiffObjectException.class)
     public void shouldThrowExceptionIfHasOnlyId() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .build();
     }
 
     @Test(expected = InvalidDiffObjectException.class)
     public void shouldThrowExceptionIfHasResultButEitherLeftOrRightIsNotFilled() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .withDiff(DIFF)
                 .build();
@@ -32,7 +32,7 @@ public class DiffTest {
 
     @Test(expected = InvalidDiffObjectException.class)
     public void shouldThrowExceptionIfIdIsMissing() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withLeft(LEFT)
                 .withRight(RIGHT)
                 .withDiff(DIFF)
@@ -41,7 +41,7 @@ public class DiffTest {
 
     @Test
     public void shouldBuildIfHasIdAndLeftOnly() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .withLeft(LEFT)
                 .build();
@@ -49,7 +49,7 @@ public class DiffTest {
 
     @Test
     public void shouldBuildIfHasIdAndRightOnly() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .withRight(LEFT)
                 .build();
@@ -57,7 +57,7 @@ public class DiffTest {
 
     @Test
     public void shouldBuildIfHasIdAndBothLeftAndRight() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .withLeft(LEFT)
                 .withRight(LEFT)
@@ -66,7 +66,7 @@ public class DiffTest {
 
     @Test
     public void shouldBuildIfHasBothSidesAndResult() {
-        new Diff.Builder()
+        new DiffJob.Builder()
                 .withId(ID)
                 .withLeft(LEFT)
                 .withRight(LEFT)

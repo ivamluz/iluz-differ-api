@@ -11,11 +11,13 @@ import com.google.inject.Singleton;
 import com.googlecode.objectify.ObjectifyFilter;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
-import com.ivamsantos.differ_api.api.GenericExceptionMapper;
 import com.ivamsantos.differ_api.api.ApiV1Resource;
-import com.ivamsantos.differ_api.diff.dao.DiffDao;
-import com.ivamsantos.differ_api.diff.dao.ObjectifyDiffDao;
-import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.api.GenericExceptionMapper;
+import com.ivamsantos.differ_api.diff.business.DiffUtilStringDiffer;
+import com.ivamsantos.differ_api.diff.business.Differ;
+import com.ivamsantos.differ_api.diff.dao.DiffJobDao;
+import com.ivamsantos.differ_api.diff.dao.ObjectifyDiffJobDao;
+import com.ivamsantos.differ_api.diff.model.DiffJob;
 import com.ivamsantos.differ_api.diff.resources.DiffV1Resource;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
 import com.ivamsantos.differ_api.diff.service.DiffServicesImpl;
@@ -27,13 +29,14 @@ public class DiffApiModule extends AbstractModule {
     static {
         JodaTimeTranslators.add(ObjectifyService.factory());
 
-        ObjectifyService.register(Diff.class);
+        ObjectifyService.register(DiffJob.class);
     }
 
     @Override
     protected void configure() {
         bindApiResourceClasses();
         bindDAOClasses();
+        bindBusinessClasses();
         bindServicesClasses();
         bindInfrastructure();
     }
@@ -56,11 +59,18 @@ public class DiffApiModule extends AbstractModule {
      * DAO binding
      */
     private void bindDAOClasses() {
-        bind(DiffDao.class).to(ObjectifyDiffDao.class);
+        bind(DiffJobDao.class).to(ObjectifyDiffJobDao.class);
+    }
+
+    /**
+     * Business classes binding
+     */
+    private void bindBusinessClasses() {
+        bind(Differ.class).to(DiffUtilStringDiffer.class);
     }
 
     /*
-     * Business services binding
+     * Service classes binding
      */
     private void bindServicesClasses() {
         bind(DiffServices.class).to(DiffServicesImpl.class);

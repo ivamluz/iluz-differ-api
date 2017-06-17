@@ -10,7 +10,7 @@ import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Diff {
+public class DiffJob {
     @Id
     private Long id;
 
@@ -18,13 +18,13 @@ public class Diff {
 
     private String right;
 
-    private String diff;
+    private Differences diff;
 
-    public Diff() {
+    public DiffJob() {
 
     }
 
-    private Diff(Builder builder) {
+    private DiffJob(Builder builder) {
         id = builder.id;
         left = builder.left;
         right = builder.right;
@@ -35,27 +35,43 @@ public class Diff {
         return id;
     }
 
+    public boolean hasId() {
+        return id != null;
+    }
+
     public String getLeft() {
         return left;
     }
 
-    public boolean hasId() {
-        return (id != null);
+    public boolean hasLeft() {
+        return left != null;
     }
 
     public String getRight() {
         return right;
     }
 
-    public String getDiff() {
+    public boolean hasRight() {
+        return right != null;
+    }
+
+    public boolean hasBothSides() {
+        return hasLeft() && hasRight();
+    }
+
+    public Differences getDiff() {
         return diff;
+    }
+
+    public boolean hasDiff() {
+        return diff != null;
     }
 
     public static final class Builder {
         private Long id;
         private String left;
         private String right;
-        private String diff;
+        private Differences diff;
 
         public Builder() {
         }
@@ -75,31 +91,31 @@ public class Diff {
             return this;
         }
 
-        public Builder withDiff(String val) {
+        public Builder withDiff(Differences val) {
             diff = val;
             return this;
         }
 
-        public Builder from(Diff diff) {
-            if (diff == null) {
+        public Builder from(DiffJob diffJob) {
+            if (diffJob == null) {
                 id = null;
                 left = null;
                 right = null;
-                diff = null;
+                diffJob = null;
             } else {
-                id = diff.getId();
-                left = diff.getLeft();
-                right = diff.getRight();
-                this.diff = diff.getDiff();
+                id = diffJob.getId();
+                left = diffJob.getLeft();
+                right = diffJob.getRight();
+                this.diff = diffJob.getDiff();
             }
 
             return this;
         }
 
-        public Diff build() {
+        public DiffJob build() {
             validate();
 
-            return new Diff(this);
+            return new DiffJob(this);
         }
 
         private void validate() {
@@ -118,7 +134,7 @@ public class Diff {
             boolean isLeftAndRightNull = (left == null) && (right == null);
 
             if (!isDiffNull && isLeftOrRightNull) {
-                throw new InvalidDiffObjectException("Diff may not be filled with either left or right as null.");
+                throw new InvalidDiffObjectException("DiffJob may not be filled with either left or right as null.");
             }
 
             boolean isOnlyIdFilled = (!isIdNull && isDiffNull && isLeftAndRightNull);

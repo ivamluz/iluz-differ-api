@@ -13,8 +13,9 @@ import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 import com.ivamsantos.differ_api.config.DiffApiModule;
-import com.ivamsantos.differ_api.diff.dao.DiffDao;
-import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.diff.dao.DiffJobDao;
+import com.ivamsantos.differ_api.diff.model.DiffJob;
+import com.ivamsantos.differ_api.diff.model.Differences;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public abstract class DiffApiBaseTest {
 
     protected Closeable dbSession;
 
-    protected DiffDao diffDao;
+    protected DiffJobDao diffJobDao;
     protected DiffServices diffServices;
 
     protected DiffFixture diffFixture;
@@ -46,7 +47,7 @@ public abstract class DiffApiBaseTest {
     @BeforeClass
     public static void setUpBeforeClass() {
         ObjectifyService.setFactory(new ObjectifyFactory());
-        ObjectifyService.register(Diff.class);
+        ObjectifyService.register(DiffJob.class);
     }
 
     @Before
@@ -57,7 +58,7 @@ public abstract class DiffApiBaseTest {
 
         dbSession = ObjectifyService.begin();
 
-        diffDao = diffDao();
+        diffJobDao = diffDao();
         diffServices = diffServices();
 
         diffFixture = new DiffFixture();
@@ -73,8 +74,8 @@ public abstract class DiffApiBaseTest {
         return this.injector.getInstance(type);
     }
 
-    private DiffDao diffDao() {
-        return getInstance(DiffDao.class);
+    private DiffJobDao diffDao() {
+        return getInstance(DiffJobDao.class);
     }
 
     private DiffServices diffServices() {
@@ -82,37 +83,40 @@ public abstract class DiffApiBaseTest {
     }
 
     public class DiffFixture {
-        private static final String LEFT = "left";
-        private static final String RIGHT = "right";
+        public static final String ORIGINAL_LEFT = "original-left";
+        public static final String UPDATED_LEFT = "updated-left";
 
-        public Diff withIdAndLeft(Long id) {
-            return new Diff.Builder()
+        public static final String ORIGINAL_RIGHT = "original-right";
+        public static final String UPDATED_RIGHT = "updated-right";
+
+        public DiffJob withIdAndLeft(Long id) {
+            return new DiffJob.Builder()
                     .withId(id)
-                    .withLeft(LEFT)
+                    .withLeft(ORIGINAL_LEFT)
                     .build();
         }
 
-        public Diff withIdAndRight(Long id) {
-            return new Diff.Builder()
+        public DiffJob withIdAndRight(Long id) {
+            return new DiffJob.Builder()
                     .withId(id)
-                    .withRight(RIGHT)
+                    .withRight(ORIGINAL_RIGHT)
                     .build();
         }
 
-        public Diff withIdLeftAndRight(Long id) {
-            return new Diff.Builder()
+        public DiffJob withIdLeftAndRight(Long id) {
+            return new DiffJob.Builder()
                     .withId(id)
-                    .withLeft(LEFT)
-                    .withRight(RIGHT)
+                    .withLeft(ORIGINAL_LEFT)
+                    .withRight(ORIGINAL_RIGHT)
                     .build();
         }
 
-        public Diff full(Long id) {
-            return new Diff.Builder()
+        public DiffJob full(Long id) {
+            return new DiffJob.Builder()
                     .withId(id)
-                    .withLeft(LEFT)
-                    .withRight(RIGHT)
-                    .withDiff("{}")
+                    .withLeft(ORIGINAL_LEFT)
+                    .withRight(ORIGINAL_RIGHT)
+                    .withDiff(new Differences())
                     .build();
         }
     }

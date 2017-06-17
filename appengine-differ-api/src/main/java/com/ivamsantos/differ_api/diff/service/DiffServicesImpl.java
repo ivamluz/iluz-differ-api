@@ -1,63 +1,104 @@
 package com.ivamsantos.differ_api.diff.service;
 
 import com.google.inject.Inject;
-import com.ivamsantos.differ_api.diff.dao.DiffDao;
-import com.ivamsantos.differ_api.diff.model.Diff;
+import com.ivamsantos.differ_api.api.exception.EntityNotFoundException;
+import com.ivamsantos.differ_api.diff.business.Differ;
+import com.ivamsantos.differ_api.diff.dao.DiffJobDao;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
+import com.ivamsantos.differ_api.diff.model.DiffJob;
+import com.ivamsantos.differ_api.diff.model.Differences;
 
 /**
  * Created by iluz on 6/15/17.
  */
 public class DiffServicesImpl implements DiffServices {
-    private DiffDao diffDao;
+    private Differ differ;
+    private DiffJobDao diffJobDao;
 
     @Inject
-    public DiffServicesImpl(DiffDao diffDao) {
-        this.diffDao = diffDao;
+    public DiffServicesImpl(Differ differ, DiffJobDao diffJobDao) {
+        this.differ = differ;
+        this.diffJobDao = diffJobDao;
     }
 
     @Override
     public void saveLeft(final long id, final String left) {
-        diffDao.transact(new DiffDao.DoVoidWork() {
+        diffJobDao.transact(new DiffJobDao.DoVoidWork() {
             @Override
             public void run() {
-                Diff diff = diffDao.findById(id);
-                if (diff != null) {
-                    diff = new Diff.Builder()
-                            .from(diff)
+                DiffJob diffJob = diffJobDao.findById(id);
+                if (diffJob != null) {
+                    diffJob = new DiffJob.Builder()
+                            .from(diffJob)
                             .withLeft(left)
+                            .withDiff(null)
                             .build();
                 } else {
-                    diff = new Diff.Builder()
+                    diffJob = new DiffJob.Builder()
                             .withId(id)
                             .withLeft(left)
                             .build();
                 }
 
-                diffDao.save(diff);
+                diffJobDao.save(diffJob);
             }
         });
     }
 
     @Override
     public void saveRight(final long id, final String right) {
-        diffDao.transact(new DiffDao.DoVoidWork() {
+        diffJobDao.transact(new DiffJobDao.DoVoidWork() {
             @Override
             public void run() {
-                Diff diff = diffDao.findById(id);
-                if (diff != null) {
-                    diff = new Diff.Builder()
-                            .from(diff)
+                DiffJob diffJob = diffJobDao.findById(id);
+                if (diffJob != null) {
+                    diffJob = new DiffJob.Builder()
+                            .from(diffJob)
                             .withRight(right)
+                            .withDiff(null)
                             .build();
                 } else {
-                    diff = new Diff.Builder()
+                    diffJob = new DiffJob.Builder()
                             .withId(id)
                             .withRight(right)
                             .build();
                 }
 
-                diffDao.save(diff);
+                diffJobDao.save(diffJob);
             }
         });
+    }
+
+    @Override
+    public Differences diff(final long id) {
+        DiffJob diffJob = diffJobDao.transact(new DiffJobDao.DoWork() {
+            @Override
+            public DiffJob run() {
+                DiffJob diffJob = diffJobDao.findById(id);
+                if (diffJob == null) {
+                    throw new EntityNotFoundException(String.valueOf(id), DiffJob.class);
+                }
+
+                if (!diffJob.hasBothSides()) {
+                    throw new InvalidDiffInputException("Both left and right inputs should be set for diffJob-ing");
+                }
+
+                if (diffJob.hasDiff()) {
+                    return diffJob;
+                }
+
+                Differences differences = differ.diff(diffJob.getLeft(), diffJob.getRight());
+                diffJob = new DiffJob.Builder()
+                        .from(diffJob)
+                        .withDiff(differences)
+                        .build();
+
+                diffJobDao.save(diffJob);
+
+                return diffJob;
+            }
+        });
+
+        return diffJob.getDiff();
     }
 }

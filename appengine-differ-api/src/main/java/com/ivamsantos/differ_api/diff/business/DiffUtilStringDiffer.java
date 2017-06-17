@@ -10,11 +10,9 @@ import java.util.List;
 /**
  * Created by iluz on 6/16/17.
  */
-public class DiffUtilStringDiffer implements Differ {
-    private final String original;
-    private final String revised;
-
-    public DiffUtilStringDiffer(String original, String revised) {
+public class DiffUtilStringDiffer implements Differ<String> {
+    @Override
+    public Differences diff(String original, String revised) {
         if (original == null) {
             throw new InvalidDiffInputException("original can't be null");
         }
@@ -23,18 +21,12 @@ public class DiffUtilStringDiffer implements Differ {
             throw new InvalidDiffInputException("revised can't be null");
         }
 
-        this.original = original;
-        this.revised = revised;
-    }
-
-    @Override
-    public Differences getDifferences() {
-        final List<Delta> deltas = getDeltas();
+        final List<Delta> deltas = getDeltas(original, revised);
 
         return convert(deltas);
     }
 
-    private List<Delta> getDeltas() {
+    private List<Delta> getDeltas(String original, String revised) {
         final List<String> originalFileLines = Arrays.asList(original.split("\\n"));
         final List<String> revisedFileLines = Arrays.asList(revised.split("\\n"));
 
