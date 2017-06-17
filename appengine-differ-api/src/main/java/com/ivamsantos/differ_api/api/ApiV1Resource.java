@@ -1,4 +1,4 @@
-package com.ivamsantos.differ_api.api.model;
+package com.ivamsantos.differ_api.api;
 
 import com.google.inject.Inject;
 import com.ivamsantos.differ_api.diff.resources.DiffV1Resource;

@@ -12,7 +12,7 @@ import com.googlecode.objectify.ObjectifyFilter;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 import com.ivamsantos.differ_api.api.GenericExceptionMapper;
-import com.ivamsantos.differ_api.api.model.ApiV1Resource;
+import com.ivamsantos.differ_api.api.ApiV1Resource;
 import com.ivamsantos.differ_api.diff.dao.DiffDao;
 import com.ivamsantos.differ_api.diff.dao.ObjectifyDiffDao;
 import com.ivamsantos.differ_api.diff.model.Diff;

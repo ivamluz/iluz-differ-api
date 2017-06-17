@@ -1,6 +1,7 @@
-package com.ivamsantos.differ_api.api.model;
+package com.ivamsantos.differ_api.api.exception;
 
 import com.google.common.collect.Lists;
+import com.ivamsantos.differ_api.api.model.FieldValidationError;
 
 import java.util.List;
 

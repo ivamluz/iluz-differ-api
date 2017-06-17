@@ -1,9 +1,9 @@
 package com.ivamsantos.differ_api.api;
 
 import com.googlecode.objectify.NotFoundException;
-import com.ivamsantos.differ_api.api.model.EntityNotFoundException;
+import com.ivamsantos.differ_api.api.exception.EntityNotFoundException;
 import com.ivamsantos.differ_api.api.model.ErrorResponse;
-import com.ivamsantos.differ_api.api.model.ValidationException;
+import com.ivamsantos.differ_api.api.exception.ValidationException;
 
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;

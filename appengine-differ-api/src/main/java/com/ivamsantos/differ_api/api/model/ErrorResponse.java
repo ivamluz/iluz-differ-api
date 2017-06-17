@@ -3,6 +3,7 @@ package com.ivamsantos.differ_api.api.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ivamsantos.differ_api.api.exception.ValidationException;
 
 import java.util.List;
 
