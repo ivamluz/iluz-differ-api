@@ -74,7 +74,6 @@ public class DiffApiModule extends AbstractModule {
      */
     private void bindServicesClasses() {
         bind(DiffServices.class).to(DiffServicesImpl.class);
-
     }
 
     @Provides

@@ -1,11 +1,14 @@
 package com.ivamsantos.differ_api.diff.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by iluz on 6/16/17.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Differences {
     private List<Delta> differences;
 

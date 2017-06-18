@@ -58,7 +58,7 @@ public abstract class DiffApiBaseTest {
 
         dbSession = ObjectifyService.begin();
 
-        diffJobDao = diffDao();
+        diffJobDao = diffJobDao();
         diffServices = diffServices();
 
         diffFixture = new DiffFixture();
@@ -74,7 +74,7 @@ public abstract class DiffApiBaseTest {
         return this.injector.getInstance(type);
     }
 
-    private DiffJobDao diffDao() {
+    private DiffJobDao diffJobDao() {
         return getInstance(DiffJobDao.class);
     }
 
