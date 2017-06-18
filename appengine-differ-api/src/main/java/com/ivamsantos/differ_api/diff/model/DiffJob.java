@@ -1,6 +1,5 @@
 package com.ivamsantos.differ_api.diff.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
@@ -9,7 +8,6 @@ import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
  * Created by iluz on 6/15/17.
  */
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffJob {
     @Id
     private Long id;
@@ -98,16 +96,13 @@ public class DiffJob {
 
         public Builder from(DiffJob diffJob) {
             if (diffJob == null) {
-                id = null;
-                left = null;
-                right = null;
-                diffJob = null;
-            } else {
-                id = diffJob.getId();
-                left = diffJob.getLeft();
-                right = diffJob.getRight();
-                this.diff = diffJob.getDiff();
+                throw new IllegalArgumentException("diffJob can't be null.");
             }
+
+            id = diffJob.getId();
+            left = diffJob.getLeft();
+            right = diffJob.getRight();
+            this.diff = diffJob.getDiff();
 
             return this;
         }

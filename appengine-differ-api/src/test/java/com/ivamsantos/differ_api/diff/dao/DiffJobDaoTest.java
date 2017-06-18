@@ -31,14 +31,14 @@ public class DiffJobDaoTest extends DiffApiBaseTest {
 
     @Test
     public void shouldInsertDiffWithOnlyLeftFilled() {
-        DiffJob diffJob = diffFixture.withIdAndLeft(ID);
+        DiffJob diffJob = diffJobFixture.withIdAndLeft(ID);
         diffJobDao.save(diffJob);
         assertThat(diffJob.getId()).isNotNull();
     }
 
     @Test
     public void shouldFindDiffById() {
-        DiffJob diffJob = diffFixture.withIdAndLeft(ID);
+        DiffJob diffJob = diffJobFixture.withIdAndLeft(ID);
         diffJobDao.save(diffJob);
 
         DiffJob savedDiffJob = diffJobDao.findById(diffJob.getId());
@@ -48,7 +48,7 @@ public class DiffJobDaoTest extends DiffApiBaseTest {
 
     @Test
     public void shouldDeleteDiff() {
-        DiffJob diffJob = diffFixture.withIdAndLeft(ID);
+        DiffJob diffJob = diffJobFixture.withIdAndLeft(ID);
         diffJobDao.save(diffJob);
 
         diffJobDao.delete(diffJob);
@@ -57,7 +57,7 @@ public class DiffJobDaoTest extends DiffApiBaseTest {
 
     @Test
     public void shouldDeleteDiffById() {
-        DiffJob diffJob = diffFixture.withIdAndLeft(ID);
+        DiffJob diffJob = diffJobFixture.withIdAndLeft(ID);
         diffJobDao.save(diffJob);
 
         diffJobDao.deleteById(diffJob.getId());
@@ -66,19 +66,17 @@ public class DiffJobDaoTest extends DiffApiBaseTest {
 
     @Test
     public void shouldUpdateDiff() {
-        DiffJob diffJob = diffFixture.full(ID);
+        DiffJob diffJob = diffJobFixture.full(ID);
         diffJobDao.save(diffJob);
-
-        String newLeft = "changedLeft";
 
         DiffJob changedDiffJob = new DiffJob.Builder()
                 .from(diffJob)
-                .withLeft(newLeft)
+                .withLeft(DiffJobFixture.UPDATED_LEFT)
                 .build();
 
-        Long id = diffJobDao.save(changedDiffJob);
+        diffJobDao.save(changedDiffJob);
 
-        DiffJob savedDiffJob = diffJobDao.findById(id);
-        assertThat(savedDiffJob.getLeft()).isEqualTo(newLeft);
+        DiffJob savedDiffJob = diffJobDao.findById(ID);
+        assertThat(savedDiffJob.getLeft()).isEqualTo(DiffJobFixture.UPDATED_LEFT);
     }
 }

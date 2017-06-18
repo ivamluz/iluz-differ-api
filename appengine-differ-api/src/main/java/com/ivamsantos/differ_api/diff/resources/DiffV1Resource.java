@@ -28,13 +28,7 @@ public class DiffV1Resource {
     @POST
     @Path("/{id : [0-9]+}/left")
     public Response left(@PathParam("id") final Long id, String encodedLeft) {
-        String decodedLeft;
-        try {
-            decodedLeft = Base64.base64Decode(encodedLeft);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("The left input should be a valid base64 encoded value.", e);
-        }
-
+        String decodedLeft = Base64.base64Decode(encodedLeft);
         diffServices.saveLeft(id, decodedLeft);
 
         return Response.status(Response.Status.OK).build();
@@ -43,13 +37,7 @@ public class DiffV1Resource {
     @POST
     @Path("/{id : [0-9]+}/right")
     public Response right(@PathParam("id") final Long id, String encodedRight) {
-        String decodeRight;
-        try {
-            decodeRight = Base64.base64Decode(encodedRight);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("The right input should be a valid base64 encoded value.", e);
-        }
-
+        String decodeRight = Base64.base64Decode(encodedRight);
         diffServices.saveRight(id, decodeRight);
 
         return Response.status(Response.Status.OK).build();

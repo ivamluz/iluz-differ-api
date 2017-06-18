@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
  * Created by iluz on 6/16/17.
  */
 @RunWith(JUnit4.class)
-public class DiffTest {
+public class DiffJobTest {
     private static final long ID = 1L;
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
