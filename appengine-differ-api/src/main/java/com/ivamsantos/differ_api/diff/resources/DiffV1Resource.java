@@ -1,9 +1,9 @@
 package com.ivamsantos.differ_api.diff.resources;
 
-import com.google.common.io.BaseEncoding;
 import com.google.inject.Inject;
 import com.ivamsantos.differ_api.diff.model.Differences;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
+import com.sun.jersey.core.util.Base64;
 
 import javax.inject.Singleton;
 import javax.ws.rs.*;
@@ -30,7 +30,7 @@ public class DiffV1Resource {
     public Response left(@PathParam("id") final Long id, String encodedLeft) {
         String decodedLeft;
         try {
-            decodedLeft = new String(BaseEncoding.base64().decode(encodedLeft));
+            decodedLeft = Base64.base64Decode(encodedLeft);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("The left input should be a valid base64 encoded value.", e);
         }
@@ -45,7 +45,7 @@ public class DiffV1Resource {
     public Response right(@PathParam("id") final Long id, String encodedRight) {
         String decodeRight;
         try {
-            decodeRight = new String(BaseEncoding.base64().decode(encodedRight));
+            decodeRight = Base64.base64Decode(encodedRight);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("The right input should be a valid base64 encoded value.", e);
         }
