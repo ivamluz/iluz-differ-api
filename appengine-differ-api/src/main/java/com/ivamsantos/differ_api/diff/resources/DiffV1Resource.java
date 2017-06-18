@@ -27,16 +27,16 @@ public class DiffV1Resource {
      * Stores the left side of the operation for later processing.
      * <p>
      * It may return @{@link Response.Status#BAD_REQUEST} instead (thanks to @{@link com.ivamsantos.differ_api.api.GenericExceptionMapper},
-     * in case the decoded value is larger than 1mb.
+     * in case the decoded data is larger than 1mb.
      *
-     * @param id          long
-     * @param encodedLeft base64encoded String.
+     * @param id    long
+     * @param input Input.
      * @return
      */
     @POST
     @Path("/{id : [0-9]+}/left")
-    public Response left(@PathParam("id") final long id, String encodedLeft) {
-        String decodedLeft = Base64.base64Decode(encodedLeft);
+    public Response left(@PathParam("id") final long id, Input input) {
+        String decodedLeft = Base64.base64Decode(input.data);
         diffServices.saveLeft(id, decodedLeft);
 
         return Response.status(Response.Status.OK).build();
@@ -46,17 +46,17 @@ public class DiffV1Resource {
      * Stores the right side of the operation for later processing.
      * <p>
      * It may return @{@link Response.Status#BAD_REQUEST} instead (thanks to @{@link com.ivamsantos.differ_api.api.GenericExceptionMapper},
-     * in case the decoded value is larger than 1mb.
+     * in case the decoded data is larger than 1mb.
      *
-     * @param id           long
-     * @param encodedRight base64encoded String.
+     * @param id    long
+     * @param input Input.
      * @return
      */
 
     @POST
     @Path("/{id : [0-9]+}/right")
-    public Response right(@PathParam("id") final long id, String encodedRight) {
-        String decodeRight = Base64.base64Decode(encodedRight);
+    public Response right(@PathParam("id") final long id, Input input) {
+        String decodeRight = Base64.base64Decode(input.data);
         diffServices.saveRight(id, decodeRight);
 
         return Response.status(Response.Status.OK).build();
@@ -78,5 +78,27 @@ public class DiffV1Resource {
         Differences differences = diffServices.diff(id);
 
         return Response.status(Response.Status.OK).entity(differences).build();
+    }
+
+    /**
+     * Object for encapsulating parameters passed to left() and right() methods.
+     */
+    public static class Input {
+        /**
+         * Base64 encoded String for diff-ing.
+         */
+        private String data;
+
+        public Input() {
+
+        }
+
+        public Input(String data) {
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
     }
 }

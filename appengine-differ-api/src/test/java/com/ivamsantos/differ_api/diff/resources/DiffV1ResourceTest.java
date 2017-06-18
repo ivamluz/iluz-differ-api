@@ -9,6 +9,7 @@ import commons.BaseResourceTest;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 
@@ -34,9 +35,11 @@ public class DiffV1ResourceTest extends BaseResourceTest {
 
     private static final String DECODED_LEFT = "left";
     private static final String ENCODED_LEFT = new String(Base64.encode(DECODED_LEFT));
+    public static final DiffV1Resource.Input INPUT_LEFT = new DiffV1Resource.Input(ENCODED_LEFT);
 
     private static final String DECODED_RIGHT = "right";
     private static final String ENCODED_RIGHT = new String(Base64.encode(DECODED_RIGHT));
+    public static final DiffV1Resource.Input INPUT_RIGHT = new DiffV1Resource.Input(ENCODED_RIGHT);
 
     private WebResource webResource;
 
@@ -54,7 +57,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
     public void shouldCreateLeftInput() throws URISyntaxException {
         ClientResponse response = webResource
                 .path(LEFT_PATH)
-                .post(ClientResponse.class, ENCODED_LEFT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, INPUT_LEFT);
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
@@ -63,7 +67,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
     public void shouldCreateRightInput() throws URISyntaxException {
         ClientResponse response = webResource
                 .path(RIGHT_PATH)
-                .post(ClientResponse.class, ENCODED_RIGHT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, INPUT_RIGHT);
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
@@ -72,11 +77,13 @@ public class DiffV1ResourceTest extends BaseResourceTest {
     public void shouldCalculateDiff() {
         webResource
                 .path(LEFT_PATH)
-                .post(ENCODED_LEFT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(INPUT_LEFT);
 
         webResource
                 .path(RIGHT_PATH)
-                .post(ENCODED_RIGHT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(INPUT_RIGHT);
 
         Differences differences = webResource
                 .path(DIFF_PATH_WITH_VALID_ID)
@@ -107,7 +114,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
         String rightPath = String.format(BASE_RIGHT_PATH, id);
         webResource
                 .path(rightPath)
-                .post(ENCODED_RIGHT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(INPUT_RIGHT);
 
         String resultsPath = String.format(BASE_RESULTS_PATH, id);
         ClientResponse response = webResource
@@ -127,7 +135,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
         String leftPath = String.format(BASE_LEFT_PATH, id);
         webResource
                 .path(leftPath)
-                .post(ENCODED_LEFT);
+                .type(MediaType.APPLICATION_JSON)
+                .post(INPUT_RIGHT);
 
         String resultsPath = String.format(BASE_RESULTS_PATH, id);
         ClientResponse response = webResource
@@ -147,7 +156,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
         String rightPath = String.format(BASE_LEFT_PATH, id);
         ClientResponse response = webResource
                 .path(rightPath)
-                .post(ClientResponse.class, hugeString());
+                .type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, new DiffV1Resource.Input(hugeString()));
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
 
@@ -162,7 +172,8 @@ public class DiffV1ResourceTest extends BaseResourceTest {
         String rightPath = String.format(BASE_RIGHT_PATH, id);
         ClientResponse response = webResource
                 .path(rightPath)
-                .post(ClientResponse.class, hugeString());
+                .type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, new DiffV1Resource.Input(hugeString()));
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
 
