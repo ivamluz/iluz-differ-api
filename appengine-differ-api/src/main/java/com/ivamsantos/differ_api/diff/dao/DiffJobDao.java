@@ -5,6 +5,7 @@ import com.ivamsantos.differ_api.diff.model.DiffJob;
 /**
  * Created by iluz on 6/15/17.
  */
+@Deprecated
 public interface DiffJobDao extends BaseDao<DiffJob> {
     void save(DiffJob diffJob);
 

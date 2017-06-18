@@ -1,5 +1,6 @@
 package com.ivamsantos.differ_api.diff.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.Strings;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -10,6 +11,7 @@ import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
  * Created by iluz on 6/18/17.
  */
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffInput {
     public enum Side {
         LEFT,

@@ -11,12 +11,13 @@ import com.ivamsantos.differ_api.diff.model.Differences;
 /**
  * Created by iluz on 6/15/17.
  */
-public class DiffServicesImpl implements DiffServices {
+@Deprecated
+public class DiffServicesJobModelImpl implements DiffServices {
     private Differ differ;
     private DiffJobDao diffJobDao;
 
     @Inject
-    public DiffServicesImpl(Differ differ, DiffJobDao diffJobDao) {
+    public DiffServicesJobModelImpl(Differ differ, DiffJobDao diffJobDao) {
         this.differ = differ;
         this.diffJobDao = diffJobDao;
     }

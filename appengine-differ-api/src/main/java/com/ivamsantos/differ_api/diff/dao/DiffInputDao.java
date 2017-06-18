@@ -14,7 +14,7 @@ public interface DiffInputDao extends BaseDao<DiffInput> {
 
     DiffInput findByKey(String key);
 
-    void delete(DiffInput diffJob);
+    void delete(DiffInput diffInput);
 
     void deleteByKey(String key);
 }

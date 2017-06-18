@@ -1,5 +1,6 @@
 package com.ivamsantos.differ_api.diff.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
@@ -7,7 +8,9 @@ import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 /**
  * Created by iluz on 6/15/17.
  */
+@Deprecated
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffJob {
     @Id
     private Long id;

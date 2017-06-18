@@ -17,13 +17,16 @@ import com.ivamsantos.differ_api.diff.business.DiffUtilStringDiffer;
 import com.ivamsantos.differ_api.diff.business.Differ;
 import com.ivamsantos.differ_api.diff.dao.DiffInputDao;
 import com.ivamsantos.differ_api.diff.dao.DiffJobDao;
+import com.ivamsantos.differ_api.diff.dao.DiffOutputDao;
 import com.ivamsantos.differ_api.diff.dao.impl.ObjectifyDiffInputDao;
 import com.ivamsantos.differ_api.diff.dao.impl.ObjectifyDiffJobDao;
+import com.ivamsantos.differ_api.diff.dao.impl.ObjectifyDiffOutputDao;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
 import com.ivamsantos.differ_api.diff.model.DiffJob;
+import com.ivamsantos.differ_api.diff.model.DiffOutput;
 import com.ivamsantos.differ_api.diff.resources.DiffV1Resource;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
-import com.ivamsantos.differ_api.diff.service.DiffServicesImpl;
+import com.ivamsantos.differ_api.diff.service.DiffServicesInputModelImpl;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 
@@ -33,6 +36,7 @@ public class DiffApiModule extends AbstractModule {
         JodaTimeTranslators.add(ObjectifyService.factory());
 
         ObjectifyService.register(DiffInput.class);
+        ObjectifyService.register(DiffOutput.class);
         ObjectifyService.register(DiffJob.class);
     }
 
@@ -65,6 +69,7 @@ public class DiffApiModule extends AbstractModule {
     private void bindDAOClasses() {
         bind(DiffJobDao.class).to(ObjectifyDiffJobDao.class);
         bind(DiffInputDao.class).to(ObjectifyDiffInputDao.class);
+        bind(DiffOutputDao.class).to(ObjectifyDiffOutputDao.class);
     }
 
     /**
@@ -78,7 +83,7 @@ public class DiffApiModule extends AbstractModule {
      * Service classes binding
      */
     private void bindServicesClasses() {
-        bind(DiffServices.class).to(DiffServicesImpl.class);
+        bind(DiffServices.class).to(DiffServicesInputModelImpl.class);
     }
 
     @Provides

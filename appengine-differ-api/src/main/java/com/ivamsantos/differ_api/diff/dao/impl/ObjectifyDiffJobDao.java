@@ -8,6 +8,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 /**
  * Created by iluz on 6/15/17.
  */
+@Deprecated
 public class ObjectifyDiffJobDao extends AbstractObjectifyDao<DiffJob> implements DiffJobDao {
     @Override
     public void save(DiffJob diffJob) {

@@ -6,7 +6,7 @@ import com.ivamsantos.differ_api.diff.business.Differ;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.DiffJob;
 import com.ivamsantos.differ_api.diff.model.Differences;
-import com.ivamsantos.differ_api.diff.service.DiffServicesImpl;
+import com.ivamsantos.differ_api.diff.service.DiffServicesJobModelImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,14 +19,15 @@ import static org.mockito.Mockito.*;
 /**
  * Created by iluz on 6/17/17.
  */
+@Deprecated
 @RunWith(JUnit4.class)
-public class DiffServicesImplTest extends DiffApiBaseTest {
+public class DiffServicesJobModelImplTest extends DiffApiBaseTest {
     private static final long ID = 1L;
 
     private Differ differ;
-    private DiffServicesImpl diffServicesImpl;
+    private DiffServicesJobModelImpl diffServicesJobModelImpl;
 
-    public DiffServicesImplTest() {
+    public DiffServicesJobModelImplTest() {
         differ = mock(Differ.class);
     }
 
@@ -36,12 +37,12 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
         super.setUp();
 
         when(differ.diff(anyString(), anyString())).thenReturn(new Differences());
-        diffServicesImpl = new DiffServicesImpl(differ, diffJobDao);
+        diffServicesJobModelImpl = new DiffServicesJobModelImpl(differ, diffJobDao);
     }
 
     @Test
     public void shouldCreateNewWithLeftIfNoneExists() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
         DiffJob savedDiffJob = diffJobDao.findById(ID);
 
         assertThat(savedDiffJob).isNotNull();
@@ -53,7 +54,7 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test
     public void shouldCreateNewWithRightIfNoneExists() {
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
         DiffJob savedDiffJob = diffJobDao.findById(ID);
 
         assertThat(savedDiffJob).isNotNull();
@@ -65,8 +66,8 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test
     public void shouldOverrideLeftIfExists() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.UPDATED_LEFT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.UPDATED_LEFT);
 
         DiffJob savedDiffJob = diffJobDao.findById(ID);
         assertThat(savedDiffJob.getLeft()).isEqualTo(DiffJobFixture.UPDATED_LEFT);
@@ -74,8 +75,8 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test
     public void shouldOverrideRightIfExists() {
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
-        diffServicesImpl.saveRight(ID, DiffJobFixture.UPDATED_RIGHT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.UPDATED_RIGHT);
 
         DiffJob savedDiffJob = diffJobDao.findById(ID);
         assertThat(savedDiffJob.getRight()).isEqualTo(DiffJobFixture.UPDATED_RIGHT);
@@ -83,8 +84,8 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test
     public void shouldUpdateWithRightIfLeftExists() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
 
         DiffJob savedDiffJob = diffJobDao.findById(ID);
         assertThat(savedDiffJob.getLeft()).isEqualTo(DiffJobFixture.ORIGINAL_LEFT);
@@ -93,8 +94,8 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test
     public void shouldUpdateWithLeftIfRightExists() {
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
 
         DiffJob savedDiffJob = diffJobDao.findById(ID);
         assertThat(savedDiffJob).isNotNull();
@@ -108,7 +109,7 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
         DiffJob originalDiffJob = diffJobFixture.full(ID);
         diffJobDao.save(originalDiffJob);
 
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
         DiffJob savedDiffJob = diffJobDao.findById(ID);
 
         assertThat(savedDiffJob.getLeft()).isEqualTo(DiffJobFixture.ORIGINAL_LEFT);
@@ -121,7 +122,7 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
         DiffJob originalDiffJob = diffJobFixture.full(ID);
         diffJobDao.save(originalDiffJob);
 
-        diffServicesImpl.saveRight(ID, DiffJobFixture.UPDATED_RIGHT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.UPDATED_RIGHT);
         DiffJob savedDiffJob = diffJobDao.findById(ID);
 
         assertThat(savedDiffJob.getLeft()).isEqualTo(originalDiffJob.getLeft());
@@ -131,36 +132,36 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldThrowExceptionIfIdDoesNotExist() {
-        diffServicesImpl.diff(ID);
+        diffServicesJobModelImpl.diff(ID);
     }
 
     @Test(expected = InvalidDiffInputException.class)
     public void shouldThrowExceptionWhenCalculatingDiffWithMissingLeftInput() {
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
-        diffServicesImpl.diff(ID);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.diff(ID);
     }
 
     @Test(expected = InvalidDiffInputException.class)
     public void shouldThrowExceptionWhenCalculatingDiffWithMissingRightInput() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
-        diffServicesImpl.diff(ID);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.diff(ID);
     }
 
     @Test
     public void shouldCalculateDiffIfBothInputsAreSetButDiffIsNotCalculated() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
 
-        Differences differences = diffServicesImpl.diff(ID);
+        Differences differences = diffServicesJobModelImpl.diff(ID);
         verify(differ, times(1)).diff(DiffJobFixture.ORIGINAL_LEFT, DiffJobFixture.ORIGINAL_RIGHT);
         assertThat(differences).isNotNull();
     }
 
     @Test
     public void shouldPersistDiff() {
-        diffServicesImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
-        diffServicesImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
-        diffServicesImpl.diff(ID);
+        diffServicesJobModelImpl.saveLeft(ID, DiffJobFixture.ORIGINAL_LEFT);
+        diffServicesJobModelImpl.saveRight(ID, DiffJobFixture.ORIGINAL_RIGHT);
+        diffServicesJobModelImpl.diff(ID);
 
         DiffJob savedDiffJob = diffJobDao.findById(ID);
         assertThat(savedDiffJob.hasDiff()).isTrue();
@@ -171,7 +172,7 @@ public class DiffServicesImplTest extends DiffApiBaseTest {
         DiffJob diffJob = diffJobFixture.full(ID);
         diffJobDao.save(diffJob);
 
-        Differences differences = diffServicesImpl.diff(ID);
+        Differences differences = diffServicesJobModelImpl.diff(ID);
         verify(differ, times(0)).diff(DiffJobFixture.ORIGINAL_LEFT, DiffJobFixture.ORIGINAL_RIGHT);
         assertThat(differences).isNotNull();
     }

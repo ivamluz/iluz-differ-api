@@ -15,8 +15,10 @@ import com.googlecode.objectify.util.Closeable;
 import com.ivamsantos.differ_api.config.DiffApiModule;
 import com.ivamsantos.differ_api.diff.dao.DiffInputDao;
 import com.ivamsantos.differ_api.diff.dao.DiffJobDao;
+import com.ivamsantos.differ_api.diff.dao.DiffOutputDao;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
 import com.ivamsantos.differ_api.diff.model.DiffJob;
+import com.ivamsantos.differ_api.diff.model.DiffOutput;
 import com.ivamsantos.differ_api.diff.model.Differences;
 import com.ivamsantos.differ_api.diff.service.DiffServices;
 import org.junit.After;
@@ -38,11 +40,16 @@ public abstract class DiffApiBaseTest {
     protected Closeable dbSession;
 
     protected DiffInputDao diffInputDao;
+    protected DiffOutputDao diffOutputDao;
+
+    @Deprecated
     protected DiffJobDao diffJobDao;
+
     protected DiffServices diffServices;
 
     protected DiffJobFixture diffJobFixture;
     protected DiffInputFixture diffInputFixture;
+    protected DiffOutputFixture diffOutputFixture;
 
     public DiffApiBaseTest() {
         this.injector = Guice.createInjector(new DiffApiModule());
@@ -51,8 +58,10 @@ public abstract class DiffApiBaseTest {
     @BeforeClass
     public static void setUpBeforeClass() {
         ObjectifyService.setFactory(new ObjectifyFactory());
-        ObjectifyService.register(DiffInput.class);
+
         ObjectifyService.register(DiffJob.class);
+        ObjectifyService.register(DiffInput.class);
+        ObjectifyService.register(DiffOutput.class);
     }
 
     @Before
@@ -65,10 +74,13 @@ public abstract class DiffApiBaseTest {
 
         diffInputDao = getInstance(DiffInputDao.class);
         diffJobDao = getInstance(DiffJobDao.class);
+        diffOutputDao = getInstance(DiffOutputDao.class);
+
         diffServices = getInstance(DiffServices.class);
 
         diffJobFixture = new DiffJobFixture();
         diffInputFixture = new DiffInputFixture();
+        diffOutputFixture = new DiffOutputFixture();
     }
 
     @After
@@ -81,6 +93,7 @@ public abstract class DiffApiBaseTest {
         return this.injector.getInstance(type);
     }
 
+    @Deprecated
     public class DiffJobFixture {
         public static final String ORIGINAL_LEFT = "original-left";
         public static final String UPDATED_LEFT = "updated-left";
@@ -140,6 +153,15 @@ public abstract class DiffApiBaseTest {
                     .withId(id)
                     .withSide(DiffInput.Side.RIGHT)
                     .withValue(ORIGINAL_LEFT)
+                    .build();
+        }
+    }
+
+    public class DiffOutputFixture {
+        public DiffOutput create(Long id) {
+            return new DiffOutput.Builder()
+                    .withId(id)
+                    .withDifferences(new Differences())
                     .build();
         }
     }

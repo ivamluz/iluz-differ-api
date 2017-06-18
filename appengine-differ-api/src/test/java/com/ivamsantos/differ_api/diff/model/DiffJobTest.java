@@ -8,6 +8,7 @@ import org.junit.runners.JUnit4;
 /**
  * Created by iluz on 6/16/17.
  */
+@Deprecated
 @RunWith(JUnit4.class)
 public class DiffJobTest {
     private static final long ID = 1L;
