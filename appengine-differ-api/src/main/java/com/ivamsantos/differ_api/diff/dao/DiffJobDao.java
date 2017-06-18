@@ -3,7 +3,9 @@ package com.ivamsantos.differ_api.diff.dao;
 import com.ivamsantos.differ_api.diff.model.DiffJob;
 
 /**
- * Created by iluz on 6/15/17.
+ * The first version of the implementation used @{@link DiffJob} instead of @{@link com.ivamsantos.differ_api.diff.model.DiffInput}
+ * <p>
+ * This contract may be disconsidered.
  */
 @Deprecated
 public interface DiffJobDao extends BaseDao<DiffJob> {

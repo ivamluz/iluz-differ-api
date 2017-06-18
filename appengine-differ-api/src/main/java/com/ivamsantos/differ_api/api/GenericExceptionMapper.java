@@ -18,6 +18,9 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Exception mapper used for returning custom API error responses.
+ */
 @Provider
 @Singleton
 public class GenericExceptionMapper implements ExceptionMapper<Throwable> {

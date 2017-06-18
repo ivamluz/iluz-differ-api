@@ -16,8 +16,19 @@ import java.util.List;
  * Created by iluz on 6/18/17.
  */
 public class DiffServicesInputModelImpl implements DiffServices {
+    /**
+     * The @{@link Differ} instance used to calculate the differences between the inputs.
+     */
     private Differ differ;
+
+    /**
+     * An @{@link DiffInputDao} instance for managing the @{@link DiffInput}s
+     */
     private DiffInputDao diffInputDao;
+
+    /**
+     * An @{@link DiffInputDao} instance for managing the @{@link DiffOutput}s
+     */
     private DiffOutputDao diffOutputDao;
 
     @Inject

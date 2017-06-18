@@ -6,10 +6,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by iluz on 6/16/17.
+ * Class for holding the results of @{@link com.ivamsantos.differ_api.diff.business.Differ#diff(Object, Object)}
+ * operations.
+ * <p>
+ * Differences between the two inputs are calculated and deltas are calculated. @{@link Delta} may be of
+ * one of @{@link Delta.Type} types and holds a reference to the original and modified chunk of text.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Differences {
+    /**
+     * List of differences found between the compared inputs
+     */
     private List<Delta> differences;
 
     public Differences() {
@@ -24,6 +31,11 @@ public class Differences {
         differences.add(delta);
     }
 
+    /**
+     * Number of differences found between the compared inputs.
+     *
+     * @return
+     */
     public int getCount() {
         return differences.size();
     }
@@ -33,6 +45,12 @@ public class Differences {
     }
 
     public static class Delta {
+        public enum Type {
+            INSERTED,
+            DELETED,
+            CHANGED
+        }
+
         private Type type;
         private Chunk original;
         private Chunk revised;
@@ -57,12 +75,6 @@ public class Differences {
 
         public Chunk getRevised() {
             return revised;
-        }
-
-        public enum Type {
-            INSERTED,
-            DELETED,
-            CHANGED
         }
 
         public static final class Builder {

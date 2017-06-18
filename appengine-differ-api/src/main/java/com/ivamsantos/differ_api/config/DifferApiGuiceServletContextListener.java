@@ -5,6 +5,9 @@ import com.google.inject.servlet.GuiceServletContextListener;
 
 import java.util.logging.Logger;
 
+/**
+ * Listener responsible for initializing the injector.
+ */
 public class DifferApiGuiceServletContextListener extends GuiceServletContextListener {
     private static final Logger LOGGER = Logger.getLogger(DifferApiGuiceServletContextListener.class.getName());
 

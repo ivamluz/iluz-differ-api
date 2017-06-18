@@ -6,7 +6,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 
 /**
- * Created by iluz on 6/15/17.
+ * This class was used in the first version of the implementation. Please disconsider it.
  */
 @Deprecated
 @Entity

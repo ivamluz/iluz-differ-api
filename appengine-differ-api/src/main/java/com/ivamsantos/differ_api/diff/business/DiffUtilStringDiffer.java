@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by iluz on 6/16/17.
+ * Implementation of Differ contract that uses java-diff-utils under the hoods.
  */
 public class DiffUtilStringDiffer implements Differ<String> {
     @Override
@@ -35,6 +35,12 @@ public class DiffUtilStringDiffer implements Differ<String> {
         return patch.getDeltas();
     }
 
+    /**
+     * Translates the list of deltas reutrned by DiffUtils.diff() to a Differences instance.
+     *
+     * @param diffUtilDeltas
+     * @return @{@link Differences}
+     */
     private Differences convert(List<Delta> diffUtilDeltas) {
         if (diffUtilDeltas == null || diffUtilDeltas.size() == 0) {
             return new Differences();

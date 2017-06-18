@@ -7,6 +7,10 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This is the entry module registered through GuiceFactory. It's responsible for registering the app modules and
+ * configuring Jersey params.
+ */
 public class DifferApiServletModule extends ServletModule {
 
     @Override

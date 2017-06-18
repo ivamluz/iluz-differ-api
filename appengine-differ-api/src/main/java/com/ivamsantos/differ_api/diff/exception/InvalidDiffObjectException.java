@@ -1,7 +1,8 @@
 package com.ivamsantos.differ_api.diff.exception;
 
 /**
- * Created by iluz on 6/15/17.
+ * This exception was used for the implementation version that was based on @{@link com.ivamsantos.differ_api.diff.model.DiffJob} objects.
+ * Please disconsider this.
  */
 @Deprecated
 public class InvalidDiffObjectException extends RuntimeException {

@@ -10,9 +10,10 @@ import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.external.ExternalTestContainerFactory;
 
 /**
- * Created by iluz on 6/17/17.
+ * Base class for performing integration tests againt the API.
  */
 public class BaseResourceTest extends JerseyTest {
+    // TODO: make this value configurable, so the tests may run against environments other than localhost.
     protected static final String HOST = "http://localhost:8080/";
 
     protected Injector injector;

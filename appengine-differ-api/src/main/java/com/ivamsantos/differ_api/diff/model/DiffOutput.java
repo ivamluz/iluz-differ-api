@@ -5,14 +5,20 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 /**
- * Created by iluz on 6/18/17.
+ * Entity for storing the diff results in the database.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffOutput {
+    /**
+     * The id of the diff operation, as provided by the API caller.
+     */
     @Id
     private long id;
 
+    /**
+     * Differences calculated by @{@link com.ivamsantos.differ_api.diff.business.Differ#diff(Object, Object)}
+     */
     private Differences diff;
 
     public DiffOutput() {

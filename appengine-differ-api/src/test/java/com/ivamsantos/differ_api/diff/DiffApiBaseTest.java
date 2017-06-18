@@ -25,6 +25,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+/**
+ * Helper class for performing unit tests.
+ */
 public abstract class DiffApiBaseTest {
 
     protected final LocalServiceTestHelper helper = new LocalServiceTestHelper(

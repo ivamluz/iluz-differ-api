@@ -29,9 +29,12 @@ import com.ivamsantos.differ_api.diff.service.DiffServices;
 import com.ivamsantos.differ_api.diff.service.DiffServicesInputModelImpl;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
-
+/**
+ * Guice module for dependency injection.
+ */
 public class DiffApiModule extends AbstractModule {
 
+    // Objectify entities should be registered here.
     static {
         JodaTimeTranslators.add(ObjectifyService.factory());
 
@@ -43,7 +46,7 @@ public class DiffApiModule extends AbstractModule {
     @Override
     protected void configure() {
         bindApiResourceClasses();
-        bindDAOClasses();
+        bindDaoClasses();
         bindBusinessClasses();
         bindServicesClasses();
         bindInfrastructure();
@@ -66,7 +69,7 @@ public class DiffApiModule extends AbstractModule {
     /*
      * DAO binding
      */
-    private void bindDAOClasses() {
+    private void bindDaoClasses() {
         bind(DiffJobDao.class).to(ObjectifyDiffJobDao.class);
         bind(DiffInputDao.class).to(ObjectifyDiffInputDao.class);
         bind(DiffOutputDao.class).to(ObjectifyDiffOutputDao.class);

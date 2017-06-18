@@ -1,7 +1,11 @@
 package com.ivamsantos.differ_api.diff.exception;
 
 /**
- * Created by iluz on 6/16/17.
+ * Exception thrown on situations when @{@link com.ivamsantos.differ_api.diff.model.DiffInput} are considered invalid.
+ * <p>
+ * Situations where this exception may be thrown:
+ * - if the left or right input is too large (larger than 1mb);
+ * - if diff() method is called, but either side of the operation is missing.
  */
 public class InvalidDiffInputException extends RuntimeException {
 

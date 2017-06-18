@@ -8,16 +8,32 @@ import com.googlecode.objectify.annotation.Index;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 
 /**
- * Created by iluz on 6/18/17.
+ * Entity class for storing the input parameters for the diff operation.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffInput {
+    /**
+     * Datastore key for identifying the entity in the datastore. Should be built through {@link #buildKey(long, Side)}
+     * method.
+     */
     @Id
     private String key;
+
+    /**
+     * The id of the diff operation, as provided by the API caller.
+     */
     @Index
     private long id;
+
+    /**
+     * The side of the input.
+     */
     private Side side;
+
+    /**
+     * The value of the input to be diff-ed.
+     */
     private String value;
 
     public DiffInput() {

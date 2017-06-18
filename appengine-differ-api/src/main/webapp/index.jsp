@@ -3,14 +3,14 @@
 <html>
 <head>
   <link href='//fonts.googleapis.com/css?family=Marmelad' rel='stylesheet' type='text/css'>
-  <title>Hello App Engine Standard Java 8</title>
+  <title>App Engine Differ API</title>
 </head>
 <body>
-    <h1>Hello App Engine -- Java 8!</h1>
+    <h1>App Engine Differ API</h1>
 
   <table>
     <tr>
-      <td colspan="2" style="font-weight:bold;">Available Servlets:</td>
+      <td colspan="2" style="font-weight:bold;">Available Services</td>
     </tr>
     <tr>
       <td><a href='/hello'>Hello App Engine</a></td>

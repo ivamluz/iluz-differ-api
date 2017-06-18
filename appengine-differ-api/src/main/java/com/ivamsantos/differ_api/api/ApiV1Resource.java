@@ -6,7 +6,10 @@ import com.ivamsantos.differ_api.diff.resources.DiffV1Resource;
 import javax.ws.rs.Path;
 
 /**
- * Created by iluz on 6/16/17.
+ * Wrapper for version 1 of the API.
+ * <p>
+ * Sub-resources should be included under this resource by exposing a method anotated with @Path. The returned object
+ * should expose its API methods.
  */
 @Path("v1")
 public class ApiV1Resource {
