@@ -1,4 +1,4 @@
-package com.ivamsantos.differ_api.resources;
+package com.ivamsantos.differ_api.diff.resources;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

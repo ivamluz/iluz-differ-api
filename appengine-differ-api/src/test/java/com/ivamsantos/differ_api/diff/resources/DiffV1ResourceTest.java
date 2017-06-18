@@ -1,4 +1,4 @@
-package com.ivamsantos.differ_api.resources;
+package com.ivamsantos.differ_api.diff.resources;
 
 import com.ivamsantos.differ_api.api.model.ErrorResponse;
 import com.ivamsantos.differ_api.diff.model.Differences;
@@ -10,16 +10,18 @@ import org.junit.Test;
 
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
-import java.util.Random;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.ivamsantos.differ_api.diff.TestHelper.hugeString;
+import static com.ivamsantos.differ_api.diff.TestHelper.randomId;
 
 /**
+ * Test suite for DiffV1Resource.
+ * <p>
  * Created by iluz on 6/17/17.
  */
 public class DiffV1ResourceTest extends BaseResourceTest {
     private static final long ID = System.currentTimeMillis();
-
 
     public static final String BASE_LEFT_PATH = "v1/diff/%s/left";
     public static final String BASE_RIGHT_PATH = "v1/diff/%s/right";
@@ -34,8 +36,6 @@ public class DiffV1ResourceTest extends BaseResourceTest {
 
     private static final String DECODED_RIGHT = "right";
     private static final String ENCODED_RIGHT = new String(Base64.encode(DECODED_RIGHT));
-
-    private static final Random RANDOM = new Random(Long.MAX_VALUE);
 
     private WebResource webResource;
 
@@ -139,7 +139,33 @@ public class DiffV1ResourceTest extends BaseResourceTest {
         assertThat(errorResponse.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
     }
 
-    private static long randomId() {
-        return Math.abs(RANDOM.nextLong());
+    @Test
+    public void shouldReturnBadRequestIfLeftInputIsTooLarge() {
+        long id = randomId();
+
+        String rightPath = String.format(BASE_LEFT_PATH, id);
+        ClientResponse response = webResource
+                .path(rightPath)
+                .post(ClientResponse.class, hugeString());
+
+        assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+
+        ErrorResponse errorResponse = response.getEntity(ErrorResponse.class);
+        assertThat(errorResponse.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    public void shouldReturnBadRequestIfRightInputIsTooLarge() {
+        long id = randomId();
+
+        String rightPath = String.format(BASE_RIGHT_PATH, id);
+        ClientResponse response = webResource
+                .path(rightPath)
+                .post(ClientResponse.class, hugeString());
+
+        assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+
+        ErrorResponse errorResponse = response.getEntity(ErrorResponse.class);
+        assertThat(errorResponse.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
     }
 }

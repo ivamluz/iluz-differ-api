@@ -1,6 +1,8 @@
 package com.ivamsantos.differ_api.diff.dao.impl;
 
+import com.google.apphosting.api.ApiProxy;
 import com.ivamsantos.differ_api.diff.dao.DiffInputDao;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
 
 import java.util.List;
@@ -13,7 +15,11 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class ObjectifyDiffInputDao extends AbstractObjectifyDao<DiffInput> implements DiffInputDao {
     @Override
     public void save(DiffInput diffInput) {
-        ofy().save().entity(diffInput).now();
+        try {
+            ofy().save().entity(diffInput).now();
+        } catch (ApiProxy.RequestTooLargeException e) {
+            throw new InvalidDiffInputException("Maximum allowed input size is 1mb.");
+        }
     }
 
     @Override

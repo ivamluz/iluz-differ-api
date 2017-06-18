@@ -1,6 +1,7 @@
 package com.ivamsantos.differ_api.diff.dao;
 
 import com.ivamsantos.differ_api.DiffApiBaseTest;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.ivamsantos.differ_api.diff.TestHelper.hugeString;
 
 /**
  * Created by iluz on 6/18/17.
@@ -72,4 +74,17 @@ public class DiffInputDaoTest extends DiffApiBaseTest {
         DiffInput savedDiffInput = diffInputDao.findByKey(diffInput.getKey());
         assertThat(savedDiffInput.getValue()).isEqualTo(DiffInputFixture.UPDATED_LEFT);
     }
+
+    @Test(expected = InvalidDiffInputException.class)
+    public void shouldThrowExceptionIfInputIsTooLarge() {
+        DiffInput diffInput = new DiffInput.Builder()
+                .withId(ID)
+                .withSide(DiffInput.Side.LEFT)
+                .withValue(hugeString())
+                .build();
+
+        diffInputDao.save(diffInput);
+    }
+
+
 }
