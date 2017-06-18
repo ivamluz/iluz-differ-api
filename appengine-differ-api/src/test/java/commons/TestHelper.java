@@ -1,4 +1,4 @@
-package com.ivamsantos.differ_api.diff;
+package commons;
 
 import com.google.common.base.Strings;
 

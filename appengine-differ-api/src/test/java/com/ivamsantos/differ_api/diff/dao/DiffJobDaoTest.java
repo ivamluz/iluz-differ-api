@@ -1,6 +1,6 @@
 package com.ivamsantos.differ_api.diff.dao;
 
-import com.ivamsantos.differ_api.DiffApiBaseTest;
+import com.ivamsantos.differ_api.diff.DiffApiBaseTest;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffObjectException;
 import com.ivamsantos.differ_api.diff.model.DiffJob;
 import org.junit.Before;

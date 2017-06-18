@@ -1,4 +1,4 @@
-package com.ivamsantos.differ_api;
+package com.ivamsantos.differ_api.diff;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;

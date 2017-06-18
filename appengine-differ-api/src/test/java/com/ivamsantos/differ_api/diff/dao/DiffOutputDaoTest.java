@@ -1,6 +1,6 @@
 package com.ivamsantos.differ_api.diff.dao;
 
-import com.ivamsantos.differ_api.DiffApiBaseTest;
+import com.ivamsantos.differ_api.diff.DiffApiBaseTest;
 import com.ivamsantos.differ_api.diff.model.DiffOutput;
 import com.ivamsantos.differ_api.diff.model.Differences;
 import org.junit.Before;

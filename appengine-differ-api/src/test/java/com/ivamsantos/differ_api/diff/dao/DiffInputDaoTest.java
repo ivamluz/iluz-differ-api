@@ -1,6 +1,6 @@
 package com.ivamsantos.differ_api.diff.dao;
 
-import com.ivamsantos.differ_api.DiffApiBaseTest;
+import com.ivamsantos.differ_api.diff.DiffApiBaseTest;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
 import org.junit.Before;
@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.ivamsantos.differ_api.diff.TestHelper.hugeString;
+import static commons.TestHelper.hugeString;
 
 /**
  * Created by iluz on 6/18/17.

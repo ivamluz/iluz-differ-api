@@ -5,6 +5,7 @@ import com.ivamsantos.differ_api.diff.model.Differences;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.Base64;
+import commons.BaseResourceTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +13,8 @@ import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.ivamsantos.differ_api.diff.TestHelper.hugeString;
-import static com.ivamsantos.differ_api.diff.TestHelper.randomId;
+import static commons.TestHelper.hugeString;
+import static commons.TestHelper.randomId;
 
 /**
  * Test suite for DiffV1Resource.

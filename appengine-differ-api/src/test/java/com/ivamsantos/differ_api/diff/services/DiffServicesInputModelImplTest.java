@@ -1,6 +1,6 @@
 package com.ivamsantos.differ_api.diff.services;
 
-import com.ivamsantos.differ_api.DiffApiBaseTest;
+import com.ivamsantos.differ_api.diff.DiffApiBaseTest;
 import com.ivamsantos.differ_api.diff.business.Differ;
 import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 import com.ivamsantos.differ_api.diff.model.DiffInput;
