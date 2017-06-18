@@ -1,10 +1,10 @@
 package com.ivamsantos.differ_api.resources;
 
-import com.google.common.io.BaseEncoding;
 import com.ivamsantos.differ_api.api.model.ErrorResponse;
 import com.ivamsantos.differ_api.diff.model.Differences;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.util.Base64;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,10 +30,10 @@ public class DiffV1ResourceTest extends BaseResourceTest {
     private static final String DIFF_PATH_WITH_VALID_ID = String.format(BASE_RESULTS_PATH, ID);
 
     private static final String DECODED_LEFT = "left";
-    private static final String ENCODED_LEFT = BaseEncoding.base64().encode(DECODED_LEFT.getBytes());
+    private static final String ENCODED_LEFT = new String(Base64.encode(DECODED_LEFT));
 
     private static final String DECODED_RIGHT = "right";
-    private static final String ENCODED_RIGHT = BaseEncoding.base64().encode(DECODED_RIGHT.getBytes());
+    private static final String ENCODED_RIGHT = new String(Base64.encode(DECODED_RIGHT));
 
     private static final Random RANDOM = new Random(Long.MAX_VALUE);
 
