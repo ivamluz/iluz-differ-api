@@ -13,19 +13,11 @@ import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiffInput {
-    public enum Side {
-        LEFT,
-        RIGHT
-    }
-
     @Id
     private String key;
-
     @Index
     private long id;
-
     private Side side;
-
     private String value;
 
     public DiffInput() {
@@ -37,6 +29,18 @@ public class DiffInput {
         side = builder.side;
         key = buildKey(id, side);
         value = Strings.nullToEmpty(builder.value);
+    }
+
+    public static String buildKey(long id, Side side) {
+        if (id < 0) {
+            throw new IllegalArgumentException("id should be greather than or equal to 0.");
+        }
+
+        if (side == null) {
+            throw new IllegalArgumentException("side can't be null.");
+        }
+
+        return String.format("%s-%s", id, side);
     }
 
     public long getId() {
@@ -55,16 +59,9 @@ public class DiffInput {
         return value;
     }
 
-    public static String buildKey(long id, Side side) {
-        if (id < 0) {
-            throw new IllegalArgumentException("id should be greather than or equal to 0.");
-        }
-
-        if (side == null) {
-            throw new IllegalArgumentException("side can't be null.");
-        }
-
-        return String.format("%s-%s", id, side);
+    public enum Side {
+        LEFT,
+        RIGHT
     }
 
     public static final class Builder {

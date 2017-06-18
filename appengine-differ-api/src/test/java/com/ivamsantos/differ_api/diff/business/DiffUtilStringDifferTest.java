@@ -15,8 +15,6 @@ import static com.google.common.truth.Truth.assertThat;
  */
 @RunWith(JUnit4.class)
 public class DiffUtilStringDifferTest {
-    Differ differ;
-
     private final String original = "Line 1\n" +
             "Line 2\n" +
             "Line 3\n" +
@@ -27,7 +25,6 @@ public class DiffUtilStringDifferTest {
             "Line 8\n" +
             "Line 9\n" +
             "Line 10";
-
     private final String revised = "Line 2\n" +
             "Line 3 with changes\n" +
             "Line 4\n" +
@@ -39,6 +36,7 @@ public class DiffUtilStringDifferTest {
             "Line 8\n" +
             "Line 9\n" +
             "Line 10 with changes";
+    Differ differ;
 
     @Before
     public void setUp() {

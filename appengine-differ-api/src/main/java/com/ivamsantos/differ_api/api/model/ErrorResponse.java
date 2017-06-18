@@ -3,9 +3,6 @@ package com.ivamsantos.differ_api.api.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ivamsantos.differ_api.api.exception.ValidationException;
-
-import java.util.List;
 
 
 /**
@@ -40,10 +37,6 @@ public class ErrorResponse {
      */
     @JsonProperty
     private String developerMessage;
-
-
-    @JsonProperty
-    private List<FieldValidationError> errors;
 
 
     public ErrorResponse() {
@@ -94,21 +87,5 @@ public class ErrorResponse {
 
     public void setDeveloperMessage(String developerMessage) {
         this.developerMessage = developerMessage;
-    }
-
-
-    public void addErrors(Throwable ex) {
-        if (ex instanceof ValidationException) {
-            errors = ((ValidationException) ex).getErrors();
-        }
-    }
-
-    public int totalErrors() {
-        return this.errors == null ? 0 : this.errors.size();
-    }
-
-
-    public List<FieldValidationError> errors() {
-        return errors;
     }
 }

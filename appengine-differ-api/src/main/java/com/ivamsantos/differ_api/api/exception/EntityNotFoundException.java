@@ -19,10 +19,9 @@ public class EntityNotFoundException extends RuntimeException {
     public String getMessage() {
         String message = "Entity not found";
         if (id != null && type != null) {
-            message = "The entity of type [" + type.getCanonicalName() + "] with identified by [" + id + "] was not found";
+            message = "The entity of type [" + type.getCanonicalName() + "] identified by [" + id + "] was not found.";
         }
 
         return message;
     }
-
 }

@@ -15,8 +15,8 @@ import static com.google.common.truth.Truth.assertThat;
  */
 @RunWith(JUnit4.class)
 public class DiffOutputDaoTest extends DiffApiBaseTest {
-    private static final long ID = 1L;
     public static final long INEXISTENT_ID = 10;
+    private static final long ID = 1L;
 
     @Before
     @Override

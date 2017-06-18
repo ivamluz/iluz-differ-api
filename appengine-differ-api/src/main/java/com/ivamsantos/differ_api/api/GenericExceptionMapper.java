@@ -3,7 +3,7 @@ package com.ivamsantos.differ_api.api;
 import com.googlecode.objectify.NotFoundException;
 import com.ivamsantos.differ_api.api.exception.EntityNotFoundException;
 import com.ivamsantos.differ_api.api.model.ErrorResponse;
-import com.ivamsantos.differ_api.api.exception.ValidationException;
+import com.ivamsantos.differ_api.diff.exception.InvalidDiffInputException;
 
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +34,6 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 
         ErrorResponse errorMessage = new ErrorResponse();
         errorMessage.setMessage(ex.getMessage());
-        errorMessage.addErrors(ex);
         setHttpStatus(ex, errorMessage);
         setErrorCode(ex, errorMessage);
 
@@ -48,12 +47,8 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
     }
 
     private void setErrorCode(Throwable ex, ErrorResponse errorMessage) {
-        if (ex instanceof ValidationException) {
-            ValidationException ve = (ValidationException) ex;
-            errorMessage.setCode(ve.getCode());
-        } else {
-            errorMessage.setCode("1");
-        }
+        // TODO: Proper error code mapping.
+        errorMessage.setCode("1");
     }
 
     private void setHttpStatus(Throwable ex, ErrorResponse errorMessage) {
@@ -63,16 +58,14 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
             errorMessage.setStatus(Response.Status.NOT_FOUND.getStatusCode());
         } else if (ex instanceof NotFoundException) {
             errorMessage.setStatus(Response.Status.NOT_FOUND.getStatusCode());
-        } else if (ex instanceof IllegalArgumentException || causedByValidationException(ex)) {
+        } else if (ex instanceof IllegalArgumentException) {
+            errorMessage.setStatus(Response.Status.BAD_REQUEST.getStatusCode());
+        } else if (ex instanceof InvalidDiffInputException) {
             errorMessage.setStatus(Response.Status.BAD_REQUEST.getStatusCode());
         } else {
             // defaults to internal server error 500
             errorMessage.setStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
         }
-    }
-
-    private boolean causedByValidationException(Throwable ex) {
-        return ex instanceof ValidationException;
     }
 
     private boolean causedByEntityNotFoundException(Throwable ex) {
