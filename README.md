@@ -32,7 +32,7 @@ In order run the service in your local machine, follow these steps:
     * 7.3. Wait for the server to be up and run the following command for executing the **integration tests**: `mvn integration-test`
 
 ## API Enpoints
-There are 3 endpoints available:
+There are 3 endpoints available (a deployed version of the API can be accessed at https://iluz-diff-api.appspot.com/v1/diff/...):
 
 ### `POST http://host/v1/diff/<id>/left`
 Receives data to be diff-ed on the left side.
