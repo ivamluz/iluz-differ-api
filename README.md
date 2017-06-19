@@ -1,20 +1,20 @@
 # AppEngine Diff API
-This is a REST API developed with Java, that runs on top of AppEngine (to avoid wasting time with servers configuration and maintenance :) ).
+This is a **REST API** developed with Java, that runs on top of **Google AppEngine** (to avoid wasting time with servers configuration and maintenance :) ).
 
 It exposes two endpoints for loading both the left and right inputs for comparison and a third endpoint that lists the differences between the two inputs.
 
 ## Libraries
 Following are the main libraries used in this project and the motivation to use them:
-* Jersey: For defining the REST API;
-* Jackson: For JSON parsing;
-* Objectify: for encapsulating Google Datastore operations;
-* Guice: for Dependency Injection.
+* **Jersey**: For defining the REST API;
+* **Jackson**: For JSON parsing;
+* **Objectify**: for encapsulating Google Datastore operations;
+* **Guice**: for Dependency Injection.
 
 For tests:
-* junit;
-* truth (for assertions);
-* mockito;
-* jersey-test-framework: for API integration tests;
+* **junit**;
+* **truth** (for assertions);
+* **mockito**;
+* **jersey-test-framework**: for API integration tests;
 
 
 ## Running the project
@@ -28,8 +28,8 @@ In order run the service in your local machine, follow these steps:
 6. Run the container (grab IMAGE ID from the previous command output): `docker run -v `pwd`/appengine-differ-api/:/appengine-differ-api -p 8080:8080 -i -t <IMAGE ID>`
 7. Inside the container:
     * 7.1. `cd appengine-differ-api/`
-    * 7.2. Run the project in background: `mvn appengine:devserver  &`
-    * 7.3. Wait for the server to be up and run the following command for executing the integration tests: `mvn integration-test`
+    * 7.2. **Run the project** in background: `mvn appengine:devserver  &`
+    * 7.3. Wait for the server to be up and run the following command for executing the **integration tests**: `mvn integration-test`
 
 ## API Enpoints
 There are 3 endpoints available:
@@ -123,5 +123,5 @@ The output of this API call is a JSON with a format similar to the following:
 * Refactor the project, so it can run, for example, on Docker, making it more portable;
 * Use MySQL as the database, instead of Google Datastore, so we remove the 1mb limitation. The downside of it is that it would make it harder to scale the solution;
 * Implement an JWT auth mechanism for the API. That would improve the security and avoid users to mess up with each others data;
-* Create a Jenkins pipeline integrated with Artifactory. Thus, we could generate and save the war and deploy it to different AppEngine instances (QA, Staging and Production, for example);
+* Create a Jenkins pipeline integrated with Artifactory. Thus, we could generate and save the war and deploy it to different Google AppEngine instances (QA, Staging and Production, for example);
 * Expose a single endpoint through which users could post both sides and get the diff as result.
