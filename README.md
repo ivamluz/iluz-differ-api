@@ -62,8 +62,8 @@ curl -i \
 
 ### `GET http://host/v1/diff/<id>`
 Diff-ies the previously input values.
-* Returns a JSON containing the number of differences and a list with the differences found if everything is OK.
-* Returns a *400 Bad Request* and error JSON in any of the following situations:
+* Returns a JSON object containing the number of differences and a list with the differences found if everything is OK.
+* Returns a *400 Bad Request* and a JSON error object in any of the following situations:
     * Left side is missing;
     * Right side is missing;
 
@@ -71,7 +71,7 @@ Diff-ies the previously input values.
 curl -i 'http://localhost:8080/v1/diff/1'
 ```
 
-In case of **success**, the output of this API call is a JSON with a format similar to the following:
+In case of **success**, the output of this API call is a JSON object with a format similar to the following:
 ```javascript
 {
 	"differences": [{
@@ -115,12 +115,20 @@ In case of **success**, the output of this API call is a JSON with a format simi
 }
 ```
 
-In case of **error**, the output will be a JSON similar to the following:
+In case of **error**, the output will be a JSON object similar to the following:
 ```javascript
 {
 	"status": 400,
 	"message": "Both left and right inputs should be set for diffJob-ing",
 	"code": "1"
+}
+```
+
+In case ***there aren't any differences*** between the two inputs, a JSON object similar to the success case is returned, so it's easier for the client of the API to handle the results:
+```javascript
+{
+	"differences": [],
+	"count": 0
 }
 ```
 
