@@ -22,7 +22,7 @@ In order run the service in your local machine, follow these steps:
 
 1. Install docker: https://docs.docker.com/engine/installation/
 2. Clone the project: `git clone git@github.com:ivamluz/iluz-differ-api.git`
-3. cd into the project folder
+3. `cd` into the root project folder (the one containing the **Dockerfile**)
 4. Build the image: `docker build -t appengine-differ-api .`
 5. List the available images: `docker images`
 6. Run the container (grab IMAGE ID from the previous command output): `docker run -v `pwd`/appengine-differ-api/:/appengine-differ-api -p 8080:8080 -i -t <IMAGE ID>`
@@ -71,7 +71,7 @@ Diff-ies the previously input values.
 curl -i 'http://localhost:8080/v1/diff/1'
 ```
 
-The output of this API call is a JSON with a format similar to the following:
+In case of success, the output of this API call is a JSON with a format similar to the following:
 ```javascript
 {
 	"differences": [{
@@ -115,9 +115,19 @@ The output of this API call is a JSON with a format similar to the following:
 }
 ```
 
+In case of error, the output will be a JSON similar to the following:
+```javascript
+{
+	"status": 400,
+	"message": "Both left and right inputs should be set for diffJob-ing",
+	"code": "1"
+}
+```
+
+
 ## Limitations
-* Maximum size for both left and right inputs is ~1mb. The reason for this, is that I chose to use Google Datastore as the database for saving the inputs and the service has a limit of around 1mb per entity saved;
-* Project is tied to Google App Engine, so it's not possible to host it on another provider.
+* Maximum size for both left and right inputs is **~1mb**. The reason for this, is that I chose to use Google Datastore as the database for saving the inputs and the service has a limit of around 1mb per entity saved;
+* Project is tied to Google AppEngine, so it's not possible to host it on another provider.
 
 ## Potential improvements
 * Refactor the project, so it can run, for example, on Docker, making it more portable;
@@ -125,3 +135,4 @@ The output of this API call is a JSON with a format similar to the following:
 * Implement an JWT auth mechanism for the API. That would improve the security and avoid users to mess up with each others data;
 * Create a Jenkins pipeline integrated with Artifactory. Thus, we could generate and save the war and deploy it to different Google AppEngine instances (QA, Staging and Production, for example);
 * Expose a single endpoint through which users could post both sides and get the diff as result.
+* Define proper codes for API errors;
