@@ -71,7 +71,7 @@ Diff-ies the previously input values.
 curl -i 'http://localhost:8080/v1/diff/1'
 ```
 
-In case of success, the output of this API call is a JSON with a format similar to the following:
+In case of **success**, the output of this API call is a JSON with a format similar to the following:
 ```javascript
 {
 	"differences": [{
@@ -115,7 +115,7 @@ In case of success, the output of this API call is a JSON with a format similar 
 }
 ```
 
-In case of error, the output will be a JSON similar to the following:
+In case of **error**, the output will be a JSON similar to the following:
 ```javascript
 {
 	"status": 400,
